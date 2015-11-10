@@ -1,0 +1,51 @@
+﻿<TabItem x:Class="ConcordSeminar.MainTabs.TabItemLoad"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <DockPanel Name="LoadPanel" MinWidth="570">
+        <Grid DockPanel.Dock="Top" Margin="0, 5, 0, 5">
+            <Grid.Resources>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Margin" Value="0, 0, 0, 5" />
+                </Style>
+
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Margin" Value="0, 0, 0, 5" />
+                </Style>
+            </Grid.Resources>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="82*"/>
+                <ColumnDefinition Width="200*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0">Song title:</Label>
+            <TextBox Name="SongTitle" Grid.Row="0" Grid.Column="1"></TextBox>
+            <Label Grid.Row="0" Grid.Column="3">Author name:</Label>
+            <TextBox Name="AuthorName" Grid.Row="0" Grid.Column="4"></TextBox>
+            <Label Grid.Row="1" Grid.Column="0">Album name:</Label>
+            <TextBox Name="AlbumName" Grid.Row="1" Grid.Column="1"></TextBox>
+            <Label Grid.Row="1" Grid.Column="3">Published at:</Label>
+            <DatePicker Name="PublishDate" Grid.Row="1" Grid.Column="4"/>
+        </Grid>
+
+        <DockPanel DockPanel.Dock="Bottom" >
+            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Name="LoadNewSong" Padding="8, 2, 8, 2" Margin="0, 0, 10, 0" Click="LoadNewSong_OnClick">Load from file</Button>
+                <Button Name="SaveNewSong" Padding="8, 2, 8, 2" Click="SaveNewSong_OnClick">Save</Button>
+            </StackPanel>
+            <RichTextBox Name="LyricsText" Margin="5"></RichTextBox>
+        </DockPanel>
+    </DockPanel>
+</TabItem>
