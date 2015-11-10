@@ -22,6 +22,8 @@ namespace ConcordSeminar.MainTabs
     {
         public TabItemGlobal()
         {
+            // Hi eli :)
+
             InitializeComponent();
         }
     }
