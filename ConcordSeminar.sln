@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcordSeminar", "ConcordSeminar\ConcordSeminar.csproj", "{DCD1CC38-C59D-432D-9DE7-C7DDFC0A1C6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concord.App", "Concord.App\Concord.App.csproj", "{F4A29A8F-94D5-439C-A06F-07B63DA25DDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DCD1CC38-C59D-432D-9DE7-C7DDFC0A1C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCD1CC38-C59D-432D-9DE7-C7DDFC0A1C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCD1CC38-C59D-432D-9DE7-C7DDFC0A1C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCD1CC38-C59D-432D-9DE7-C7DDFC0A1C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4A29A8F-94D5-439C-A06F-07B63DA25DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4A29A8F-94D5-439C-A06F-07B63DA25DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4A29A8F-94D5-439C-A06F-07B63DA25DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4A29A8F-94D5-439C-A06F-07B63DA25DDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
