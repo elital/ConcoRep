@@ -29,7 +29,7 @@
             <TextBox Name="AlbumName" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5"></TextBox>
             <Label Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5">Free text:</Label>
             <TextBox Name="FreeText" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0, 0, 70, 5"/>
-            <Button HorizontalAlignment="Right" Grid.Row="2" Grid.Column="4" Margin="0, 0, 10, 5" Padding="15, 0, 15, 0">Go</Button>
+            <Button Name="GoButton" Click="GoButton_OnClick" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="4" Margin="0, 0, 10, 5" Padding="15, 0, 15, 0">Go</Button>
 
         </Grid>
 

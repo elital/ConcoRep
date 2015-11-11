@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Loaded="LoadControl_OnLoaded">
+    
     <DockPanel Name="LoadPanel">
         <Grid DockPanel.Dock="Top" Margin="0, 5, 0, 5">
             <Grid.Resources>
@@ -25,11 +27,11 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Song title:</Label>
-            <TextBox Name="SongTitle" Grid.Row="0" Grid.Column="1"></TextBox>
+            <TextBox Name="SongTitle" Grid.Row="0" Grid.Column="1" />
             <Label Grid.Row="0" Grid.Column="3">Author name:</Label>
-            <TextBox Name="AuthorName" Grid.Row="0" Grid.Column="4"></TextBox>
+            <TextBox Name="AuthorName" Grid.Row="0" Grid.Column="4"/>
             <Label Grid.Row="1" Grid.Column="0">Album name:</Label>
-            <TextBox Name="AlbumName" Grid.Row="1" Grid.Column="1"></TextBox>
+            <TextBox Name="AlbumName" Grid.Row="1" Grid.Column="1"/>
             <Label Grid.Row="1" Grid.Column="3">Published at:</Label>
             <DatePicker Name="PublishDate" Grid.Row="1" Grid.Column="4"/>
         </Grid>

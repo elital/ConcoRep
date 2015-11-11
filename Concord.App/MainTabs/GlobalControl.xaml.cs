@@ -24,5 +24,10 @@ namespace Concord.App.MainTabs
         {
             InitializeComponent();
         }
+
+        private void GoButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

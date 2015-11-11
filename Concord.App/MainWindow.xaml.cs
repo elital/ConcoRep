@@ -24,5 +24,10 @@ namespace Concord.App
         {
             InitializeComponent();
         }
+
+        private void HiddenTab_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            MainTabControl.SelectedIndex = MainTabControl.Items.Count - 1;
+        }
     }
 }

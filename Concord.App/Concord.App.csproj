@@ -53,6 +53,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="MainTabs\ContextControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainTabs\GlobalControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -81,6 +85,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MainTabs\ContextControl.xaml.cs">
+      <DependentUpon>ContextControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainTabs\GlobalControl.xaml.cs">
       <DependentUpon>GlobalControl.xaml</DependentUpon>
     </Compile>
@@ -102,6 +109,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\LyricsModel.cs" />
+    <Compile Include="Models\SongModel.cs" />
+    <Compile Include="Models\WordModel.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
