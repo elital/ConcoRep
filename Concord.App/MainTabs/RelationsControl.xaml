@@ -1,0 +1,47 @@
+﻿<TabItem x:Class="Concord.App.MainTabs.RelationsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Grid.Resources>
+                <Style TargetType="{x:Type TextBox}"><Setter Property="Margin" Value="0, 0, 0, 5" /></Style>
+                <Style TargetType="{x:Type Label}"><Setter Property="Margin" Value="0, 0, 0, 5" /></Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90*"/>
+                <ColumnDefinition Width="210*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="210*"/>
+                <ColumnDefinition Width="55*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0">Relation Name:</Label>
+            <TextBox Name="RelationName" Grid.Row="0" Grid.Column="1" Width="400"/>
+            <Button Name="AddRelation" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
+            <Label Grid.Row="1" Grid.Column="0">Pair:</Label>
+            <TextBox Name="FirstWord" Grid.Row="1" Grid.Column="1"/>
+            <TextBox Name="SecondWord" Grid.Row="1" Grid.Column="3"/>
+            <Button Name="AddPair" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
+
+        </Grid>
+
+        <DockPanel DockPanel.Dock="Left" Margin="5, 5, 0, 5">
+            <Label DockPanel.Dock="Top">Relationships</Label>
+            <ListView Name="RelationNamesList" MinWidth="100" MaxWidth="250"/>
+        </DockPanel>
+
+        <DockPanel Margin="0, 5, 5, 5">
+            <Label DockPanel.Dock="Top">Relation Pairs</Label>
+            <ListView Name="PairsList" DockPanel.Dock="Top" />
+        </DockPanel>
+
+    </DockPanel>
+</TabItem>

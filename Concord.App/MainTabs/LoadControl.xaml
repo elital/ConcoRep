@@ -8,13 +8,8 @@
     <DockPanel Name="LoadPanel">
         <Grid DockPanel.Dock="Top" Margin="0, 5, 0, 5">
             <Grid.Resources>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="Margin" Value="0, 0, 0, 5" />
-                </Style>
-
-                <Style TargetType="{x:Type Label}">
-                    <Setter Property="Margin" Value="0, 0, 0, 5" />
-                </Style>
+                <Style TargetType="{x:Type TextBox}"><Setter Property="Margin" Value="0, 0, 0, 5" /></Style>
+                <Style TargetType="{x:Type Label}"><Setter Property="Margin" Value="0, 0, 0, 5" /></Style>
             </Grid.Resources>
 
             <Grid.ColumnDefinitions>

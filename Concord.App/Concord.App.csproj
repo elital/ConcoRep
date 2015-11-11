@@ -61,6 +61,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MainTabs\PhrasesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainTabs\RelationsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -74,6 +82,12 @@
     </Compile>
     <Compile Include="MainTabs\LoadControl.xaml.cs">
       <DependentUpon>LoadControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainTabs\PhrasesControl.xaml.cs">
+      <DependentUpon>PhrasesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainTabs\RelationsControl.xaml.cs">
+      <DependentUpon>RelationsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
