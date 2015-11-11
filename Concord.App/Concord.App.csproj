@@ -57,6 +57,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MainTabs\GroupsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainTabs\LoadControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -79,6 +83,9 @@
     </Compile>
     <Compile Include="MainTabs\GlobalControl.xaml.cs">
       <DependentUpon>GlobalControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainTabs\GroupsControl.xaml.cs">
+      <DependentUpon>GroupsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainTabs\LoadControl.xaml.cs">
       <DependentUpon>LoadControl.xaml</DependentUpon>

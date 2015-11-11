@@ -9,10 +9,10 @@
 
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80*"/>
+                <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="200*"/>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="82*"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="82"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>

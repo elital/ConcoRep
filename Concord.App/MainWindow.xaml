@@ -6,7 +6,7 @@
         MinHeight="300" MinWidth="747">
     
     <DockPanel Name="MainPanel">
-        <StackPanel Name="ListPanel" Width="150" DockPanel.Dock="Left">
+        <StackPanel Name="MainWordsListPanel" Width="150" DockPanel.Dock="Left">
             <ListView>
                 <ListViewItem>aaa</ListViewItem>
                 <ListViewItem>bbb</ListViewItem>
@@ -15,13 +15,34 @@
         </StackPanel>
 
         <TabControl Margin="3, 0, 0, 0" DockPanel.Dock="Top">
-            <mainTabs:LoadControl Header="Load"/>
+            <TabControl.Template>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid ClipToBounds="True" KeyboardNavigation.TabNavigation="Local" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Name="ColumnDefinition0" Width="*"/>
+                            <ColumnDefinition Name="ColumnDefinition2" Width="0"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Name="RowDefinition0" Height="Auto"/>
+                            <RowDefinition Name="RowDefinition1" Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="HeaderPanel" Grid.Column="0" Grid.Row="0" Margin="2,2,2,0" Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
+                        <Border Name="ContentPanel" Grid.Column="0" Grid.Row="1" Background="{TemplateBinding Panel.Background}" BorderBrush="{TemplateBinding Border.BorderBrush}" 
+                                BorderThickness="{TemplateBinding Border.BorderThickness}" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" 
+                                KeyboardNavigation.TabNavigation="Local">
+                            <ContentPresenter Name="PART_SelectedContentHost" Margin="{TemplateBinding Control.Padding}" Content="{TemplateBinding TabControl.SelectedContent}" 
+                                              ContentSource="SelectedContent" ContentStringFormat="{TemplateBinding TabControl.SelectedContentStringFormat}" 
+                                              ContentTemplate="{TemplateBinding TabControl.SelectedContentTemplate}" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </TabControl.Template>
+
             <mainTabs:GlobalControl Header="Global"/>
-            <TabItem Header="Groups">
-                <DockPanel Width="570"></DockPanel>
-            </TabItem>
+            <mainTabs:GroupsControl Header="Groups"/>
             <mainTabs:RelationsControl Header="Relations"/>
             <mainTabs:PhrasesControl Header="Phrases"/>
+            <mainTabs:LoadControl Header="Load" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
         </TabControl>
     </DockPanel>
 </Window>

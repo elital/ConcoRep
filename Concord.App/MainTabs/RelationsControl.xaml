@@ -12,11 +12,12 @@
                 <Style TargetType="{x:Type Label}"><Setter Property="Margin" Value="0, 0, 0, 5" /></Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90*"/>
+                <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="210*"/>
-                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="210*"/>
-                <ColumnDefinition Width="55*"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="55"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -24,12 +25,12 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Relation Name:</Label>
-            <TextBox Name="RelationName" Grid.Row="0" Grid.Column="1" Width="400"/>
-            <Button Name="AddRelation" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
+            <TextBox Name="RelationName" Grid.Row="0" Grid.Column="1"/>
+            <Button Name="AddRelation" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
             <Label Grid.Row="1" Grid.Column="0">Pair:</Label>
             <TextBox Name="FirstWord" Grid.Row="1" Grid.Column="1"/>
             <TextBox Name="SecondWord" Grid.Row="1" Grid.Column="3"/>
-            <Button Name="AddPair" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
+            <Button Name="AddPair" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
 
         </Grid>
 
