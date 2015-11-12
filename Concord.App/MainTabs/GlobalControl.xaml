@@ -2,9 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <TabItem.DataContext>
+        <viewModels:GlobalViewModel/>
+    </TabItem.DataContext>
+    
     <DockPanel>
 
         <Grid DockPanel.Dock="Top">
@@ -22,24 +27,24 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Margin="0, 5, 0, 5">Song title:</Label>
-            <TextBox Name="SongTitle" Grid.Row="0" Grid.Column="1" Margin="0, 5, 0, 5"></TextBox>
+            <TextBox Name="SongTitle" Grid.Row="0" Grid.Column="1" Margin="0, 5, 0, 5"/>
             <Label Grid.Row="0" Grid.Column="3" Margin="0, 5, 0, 5">Author name:</Label>
-            <TextBox Name="AuthorName" Grid.Row="0" Grid.Column="4" Margin="0, 5, 10, 5"></TextBox>
+            <TextBox Name="AuthorName" Grid.Row="0" Grid.Column="4" Margin="0, 5, 10, 5"/>
             <Label Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5">Album name:</Label>
-            <TextBox Name="AlbumName" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5"></TextBox>
+            <TextBox Name="AlbumName" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5"/>
             <Label Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5">Free text:</Label>
             <TextBox Name="FreeText" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0, 0, 70, 5"/>
-            <Button Name="GoButton" Click="GoButton_OnClick" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="4" Margin="0, 0, 10, 5" Padding="15, 0, 15, 0">Go</Button>
+            <Button Content="Go" Command="{Binding Path=GoCommand}" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="4" Margin="0, 0, 10, 5" Padding="15, 0, 15, 0"/>
 
         </Grid>
 
-        <ListView Margin="10" Name="SongsList" DockPanel.Dock="Top">
+        <ListView Margin="10" Name="SongsList" DockPanel.Dock="Top" ItemsSource="{Binding Path=Songs}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Title" Width="{Binding ElementName=col0, Path=ActualWidth}" DisplayMemberBinding="{Binding Title}" />
                     <GridViewColumn Header="Author" Width="{Binding ElementName=col1, Path=ActualWidth}" DisplayMemberBinding="{Binding Author}" />
                     <GridViewColumn Header="Publish Date" Width="{Binding ElementName=col2, Path=ActualWidth}" DisplayMemberBinding="{Binding PublishDate}" />
-                    <GridViewColumn Header="Album Name" Width="{Binding ElementName=col3, Path=ActualWidth}" DisplayMemberBinding="{Binding AlbumName}" />
+                    <GridViewColumn Header="Album Name" Width="{Binding ElementName=col3, Path=ActualWidth}" DisplayMemberBinding="{Binding Album}" />
                 </GridView>
             </ListView.View>
         </ListView>

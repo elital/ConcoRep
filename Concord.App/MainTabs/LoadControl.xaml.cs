@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -115,8 +116,15 @@ namespace Concord.App.MainTabs
 
                 if (isValid)
                 {
+                    var data = text.Split(new[] {Environment.NewLine}, 2, StringSplitOptions.None);
+                    var details = data[0].Split(';');
+
                     LyricsText.Clear();
-                    LyricsText.Text = text;
+                    LyricsText.Text = data[1];
+                    SongTitle.Text = details[0];
+                    AuthorName.Text = details[1];
+                    AlbumName.Text = details[2];
+                    PublishDate.SelectedDate = DateTime.ParseExact(details[3], "dd/MM/yyyy", CultureInfo.CurrentCulture);
                 }
             }
         }

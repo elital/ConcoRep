@@ -39,6 +39,11 @@ namespace Concord.App.Models
             }
         }
 
+        public override string ToString()
+        {
+            return Word;
+        }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
