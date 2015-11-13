@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using Concord.App.HiddenTabsData;
 using Concord.App.Models;
@@ -62,6 +63,8 @@ namespace Concord.App.ViewModels
         public void MainDockUnloadedExecuted()
         {
             ResultData.Instance.Contexts.Clear();
+
+            ((MainWindow) Application.Current.MainWindow).HiddenTabFocusAllowed = false;
         }
     }
 }

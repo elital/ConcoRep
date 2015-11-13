@@ -31,10 +31,8 @@ namespace Concord.App
         private void HiddenTab_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (!HiddenTabFocusAllowed)
-            {
                 MainTabControl.SelectedIndex = MainTabControl.Items.Count - 1;
-                HiddenTabFocusAllowed = false;
-            }
         }
+
     }
 }
