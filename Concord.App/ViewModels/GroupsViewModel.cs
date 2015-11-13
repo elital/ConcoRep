@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -99,7 +100,7 @@ namespace Concord.App.ViewModels
 
             if (SelectedGroup.Words.SingleOrDefault(w => w.Word == NewData.Word) != null)
             {
-                // TODO : set error
+                // TODO : set error - word already exist
                 return;
             }
 
@@ -132,6 +133,40 @@ namespace Concord.App.ViewModels
         {
             Words.Clear();
             Words.AddRange(SelectedGroup.Words);
+        }
+
+        private DelegateCommand doubleClickGroupCommand;
+        public ICommand DoubleClickGroupCommand
+        {
+            get
+            {
+                if (doubleClickGroupCommand == null)
+                    doubleClickGroupCommand = new DelegateCommand(DoubleClickGroupExecuted, DoubleClickGroupCanExecute);
+
+                return doubleClickGroupCommand;
+            }
+        }
+
+        public bool DoubleClickGroupCanExecute()
+        {
+            return true;
+        }
+
+        public void DoubleClickGroupExecuted()
+        {
+            if (!Groups.Any())
+                return;
+
+            if (string.IsNullOrEmpty(SelectedGroup.Name))
+            {
+                // TODO : set error
+                return;
+            }
+
+            // TODO : fetch group contexts
+
+            ((MainWindow) Application.Current.MainWindow).HiddenTabFocusAllowed = true;
+            ((MainWindow) Application.Current.MainWindow).MainTabControl.SelectedIndex = 5;
         }
     }
 }

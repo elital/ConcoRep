@@ -65,6 +65,33 @@ namespace Concord.App.Models
 
         public ObservableCollection<LyricsModel> Lyrics { get; set; }
 
+
+        public override string ToString()
+        {
+            var text = string.Empty;
+            var lastLineNumber = 0;
+
+            foreach (var word in Lyrics)
+            {
+                if (lastLineNumber == 0)
+                {
+                    lastLineNumber++;
+                    text = word.Word.Word;
+                }
+                else if (lastLineNumber == word.Line)
+                {
+                    text = string.Format("{0} {1}", text, word.Word.Word);
+                }
+                else
+                {
+                    text = string.Format("{0}{1}{2}", text, Environment.NewLine, word.Word.Word);
+                    lastLineNumber = word.Line;
+                }
+            }
+
+            return text;
+        }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

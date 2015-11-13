@@ -47,6 +47,9 @@
             <Label DockPanel.Dock="Top">Groups</Label>
             <ListView Name="GroupNamesList" MinWidth="100" MaxWidth="250" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup, Mode=TwoWay}">
                 <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding DoubleClickGroupCommand}"/>
+                    </i:EventTrigger>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SelectedGroupCommand}"/>
                     </i:EventTrigger>

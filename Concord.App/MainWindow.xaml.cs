@@ -23,11 +23,18 @@ namespace Concord.App
         public MainWindow()
         {
             InitializeComponent();
+            HiddenTabFocusAllowed = false;
         }
+
+        public bool HiddenTabFocusAllowed { get; set; }
 
         private void HiddenTab_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            MainTabControl.SelectedIndex = MainTabControl.Items.Count - 1;
+            if (!HiddenTabFocusAllowed)
+            {
+                MainTabControl.SelectedIndex = MainTabControl.Items.Count - 1;
+                HiddenTabFocusAllowed = false;
+            }
         }
     }
 }
