@@ -5,44 +5,6 @@ using Concord.App.Annotations;
 
 namespace Concord.App.Models
 {
-    public class PairModel : INotifyPropertyChanged
-    {
-        private WordModel _firstWord;
-        public WordModel FirstWord
-        {
-            get { return _firstWord; }
-            set
-            {
-                _firstWord = value;
-                OnPropertyChanged("FirstWord");
-            }
-        }
-
-        private WordModel _secondWord;
-        public WordModel SecondWord
-        {
-            get { return _secondWord; }
-            set
-            {
-                _secondWord = value;
-                OnPropertyChanged("SecondWord");
-            }
-        }
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-    }
-
     public class RelationModel : INotifyPropertyChanged
     {
         private int _id;
@@ -68,6 +30,54 @@ namespace Concord.App.Models
         }
 
         public ObservableCollection<PairModel> Pairs { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+    }
+
+    public class PairModel : INotifyPropertyChanged
+    {
+        private WordModel _firstWord;
+        public WordModel FirstWord
+        {
+            get { return _firstWord; }
+            set
+            {
+                _firstWord = value;
+                OnPropertyChanged("FirstWord");
+            }
+        }
+
+        private WordModel _secondWord;
+        public WordModel SecondWord
+        {
+            get { return _secondWord; }
+            set
+            {
+                _secondWord = value;
+                OnPropertyChanged("SecondWord");
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} - {1}", FirstWord.Word, SecondWord.Word);
+        }
 
         #region INotifyPropertyChanged
 

@@ -2,9 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
+    <TabItem.DataContext>
+        <viewModels:RelationsViewModel/>
+    </TabItem.DataContext>
+
     <DockPanel>
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.Resources>
@@ -25,23 +32,32 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Relation Name:</Label>
-            <TextBox Name="RelationName" Grid.Row="0" Grid.Column="1"/>
-            <Button Name="AddRelation" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewData.RelationName}"/>
+            <Button Content="Add" Command="{Binding CreateRelationCommand}" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0"/>
             <Label Grid.Row="1" Grid.Column="0">Pair:</Label>
-            <TextBox Name="FirstWord" Grid.Row="1" Grid.Column="1"/>
-            <TextBox Name="SecondWord" Grid.Row="1" Grid.Column="3"/>
-            <Button Name="AddPair" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0">Add</Button>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewData.FirstWord}"/>
+            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding NewData.SecondWord}"/>
+            <Button Content="Add" Command="{Binding AddPairCommand}" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0"/>
 
         </Grid>
 
         <DockPanel DockPanel.Dock="Left" Margin="5, 5, 0, 5">
             <Label DockPanel.Dock="Top">Relationships</Label>
-            <ListView Name="RelationNamesList" MinWidth="100" MaxWidth="250"/>
+            <ListView MinWidth="100" MaxWidth="250" ItemsSource="{Binding Relations}" SelectedItem="{Binding SelectedRelation}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding DoubleClickRelationCommand}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectedRelationCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListView>
         </DockPanel>
 
         <DockPanel Margin="0, 5, 5, 5">
             <Label DockPanel.Dock="Top">Relation Pairs</Label>
-            <ListView Name="PairsList" DockPanel.Dock="Top" />
+            <ListView DockPanel.Dock="Top" ItemsSource="{Binding Pairs}"/>
         </DockPanel>
 
     </DockPanel>

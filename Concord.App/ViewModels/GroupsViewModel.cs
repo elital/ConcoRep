@@ -71,6 +71,7 @@ namespace Concord.App.ViewModels
             Groups.Add(newGroup);
             NewData.GroupName = string.Empty;
             SelectedGroup = newGroup;
+            SelectedGroupExecuted();
         }
 
         private DelegateCommand addWordCommand;
@@ -107,8 +108,9 @@ namespace Concord.App.ViewModels
             // TODO : create real word
             // TODO : connect new word to the group
 
-            Groups.Single(g => g.Id == SelectedGroup.Id).Words.Add(new WordModel {Id = _wordIdTemp++, Word = NewData.Word, Repetition = 0});
-            SelectedGroupExecuted();
+            var newGroupWord = new WordModel {Id = _wordIdTemp++, Word = NewData.Word, Repetition = 0};
+            Groups.Single(g => g.Id == SelectedGroup.Id).Words.Add(newGroupWord);
+            Words.Add(newGroupWord);
             NewData.Word = string.Empty;
         }
 
