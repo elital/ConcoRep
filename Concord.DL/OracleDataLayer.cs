@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using Oracle.DataAccess.Client;
 
 namespace Concord.DL
@@ -20,13 +22,17 @@ namespace Concord.DL
             _connectionString = ConfigurationManager.ConnectionStrings["ET"].ConnectionString;
         }
         
-        public T Select<T>(Func<OracleDataReader, T> handleResult, string statement)
+        public T Select<T>(Func<OracleDataReader, T> handleResult, string statement, params string[][] parameters)
         {
             using (var connection = new OracleConnection { ConnectionString = _connectionString })
             {
                 connection.Open();
+                var command = new OracleCommand { Connection = connection, CommandText = statement };
 
-                var command = new OracleCommand {Connection = connection, CommandText = statement};
+                if (parameters != null)
+                    foreach (var parameter in parameters)
+                        command.Parameters.Add(parameter[0], parameter[1]);
+
                 var reader = command.ExecuteReader();
                 var result = handleResult(reader);
 
@@ -36,13 +42,17 @@ namespace Concord.DL
             }
         }
 
-        public int DmlAction(string statement)
+        public int DmlAction(string statement, params string[][] parameters)
         {
             using (var connection = new OracleConnection { ConnectionString = _connectionString })
             {
                 connection.Open();
-
                 var command = new OracleCommand {Connection = connection, CommandText = statement};
+
+                if (parameters != null)
+                    foreach (var parameter in parameters)
+                        command.Parameters.Add(parameter[0], parameter[1]);
+
                 int rowsInserted = command.ExecuteNonQuery();
                 
                 connection.Close();
