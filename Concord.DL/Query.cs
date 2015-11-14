@@ -7,21 +7,59 @@ namespace Concord.DL
 {
     public class Query
     {
-        private readonly string _queryNameStatement = "";
+        private const string WordText = "WORD";
+        private const string IdText = "ID";
+        private const string RepetitionText = "REPETITION";
+        private const string SequenceNameText = "SequenceName";
+        private readonly string _getSequenceNextVal = string.Format("select :{0}.nextval VAL from dual", SequenceNameText);
+        private readonly string _getWordByWordTextStatement = string.Format("select * from WORDS W where W.WORD = :{0}", WordText);
+        private readonly string _insertIntoWordsStatement = string.Format("insert into WORDS(ID, WORD, REPETITION) values(:{0}, :{1}, :{2})", IdText, WordText, RepetitionText);
+        private readonly string _increaseWordRepetitionStatement = string.Format("update WORDS W set W.REPETITION = W.REPETITION + 1 where W.ID = :{0}", IdText);
 
 
         public Word GetOrCreateWord(string text, bool increaseRepetition)
         {
-            return OracleDataLayer.Instance.Select<Word>(
+            var word = OracleDataLayer.Instance.Select(
                 (reader) =>
                     {
-                        while (reader.Read())
-                        {
-                            //reader["MYFIELD"];
-                        }
-                        return new Word();
+                        if (!reader.Read())
+                            return null;
+
+                        return new Word
+                            {
+                                Id = (int) reader[IdText],
+                                Text = (string) reader[WordText],
+                                Repetitions = (int) reader[RepetitionText]
+                            };
                     }
-                , "select...");
+                // TODO : set query
+                , _getWordByWordTextStatement, new[] {WordText, text});
+
+            if (word == null)
+            {
+                var repetition = increaseRepetition ? 1 : 0;
+
+                var id = OracleDataLayer.Instance.Select(
+                    (reader) =>
+                        {
+                            if (!reader.Read())
+                                return null;
+
+                            return (int?) reader["VAL"];
+                        }
+                    , _getSequenceNextVal, new[] {SequenceNameText, ""});
+
+
+                // TODO : create word (insert)
+                OracleDataLayer.Instance.DmlAction(_insertIntoWordsStatement, new[] {IdText, id.ToString()}, new[] {WordText, text}, new[] {RepetitionText, repetition.ToString()});
+            }
+            else if (increaseRepetition)
+            {
+                // TODO : increase repetition (update)
+                OracleDataLayer.Instance.DmlAction(_increaseWordRepetitionStatement, new[] {IdText, word.Id.ToString()});
+            }
+
+            return word;
         }
 
         private void BuildSongWords(Song song)
