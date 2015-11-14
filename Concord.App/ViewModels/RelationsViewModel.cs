@@ -28,7 +28,7 @@ namespace Concord.App.ViewModels
             Relations = new ObservableCollection<RelationModel>();
             Pairs = new ObservableCollection<PairModel>();
             NewData = new NewRelationModel();
-            SelectedRelation = new RelationModel();
+            SelectedRelation = Relations.FirstOrDefault() ?? new RelationModel();
         }
 
         private DelegateCommand createRelationCommand;

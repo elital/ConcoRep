@@ -69,10 +69,12 @@
     <Compile Include="HiddenTabsData\ResultData.cs" />
     <Compile Include="Models\ContextModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
+    <Compile Include="Models\PhraseModel.cs" />
     <Compile Include="Models\RelationModel.cs" />
     <Compile Include="ViewModels\ContextViewModel.cs" />
     <Compile Include="ViewModels\GlobalViewModel.cs" />
     <Compile Include="ViewModels\GroupsViewModel.cs" />
+    <Compile Include="ViewModels\PhrasesViewModel.cs" />
     <Compile Include="ViewModels\RelationsViewModel.cs" />
     <Page Include="MainTabs\ContextControl.xaml">
       <SubType>Designer</SubType>

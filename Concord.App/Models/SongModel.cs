@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Concord.App.Annotations;
 
@@ -71,7 +72,7 @@ namespace Concord.App.Models
             var text = string.Empty;
             var lastLineNumber = 0;
 
-            foreach (var word in Lyrics)
+            foreach (var word in Lyrics.OrderBy(l=>l.Line).ThenBy(l=>l.Column).ToList())
             {
                 if (lastLineNumber == 0)
                 {
