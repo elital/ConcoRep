@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Sockets;
 using Concord.Entities;
+using Oracle.DataAccess.Client;
 
 namespace Concord.DL
 {
@@ -10,48 +11,40 @@ namespace Concord.DL
         private const string WordText = "WORD";
         private const string IdText = "ID";
         private const string RepetitionText = "REPETITION";
-        private const string SequenceNameText = "SequenceName";
-        private readonly string _getSequenceNextVal = string.Format("select :{0}.nextval VAL from dual", SequenceNameText);
-        private readonly string _getWordByWordTextStatement = string.Format("select * from WORDS W where W.WORD = :{0}", WordText);
-        private readonly string _insertIntoWordsStatement = string.Format("insert into WORDS(ID, WORD, REPETITION) values(:{0}, :{1}, :{2})", IdText, WordText, RepetitionText);
-        private readonly string _increaseWordRepetitionStatement = string.Format("update WORDS W set W.REPETITION = W.REPETITION + 1 where W.ID = :{0}", IdText);
+        //private const string SequenceNameText = "SequenceName";
+        //private readonly string _getSequenceNextVal = $"select :{SequenceNameText}.nextval VAL from dual";
+        private readonly string _getWordByWordTextStatement = $"select * from WORDS W where W.WORD = :{WordText}";
+        private readonly string _insertIntoWordsStatement =
+            $"insert into WORDS(ID, WORD, REPETITION) values(WORDS_S.NEXTVAL, :{WordText}, :{RepetitionText})";
+        private readonly string _increaseWordRepetitionStatement =
+            $"update WORDS W set W.REPETITION = W.REPETITION + 1 where W.ID = :{IdText}";
 
+        #region Singleton
 
+        private static Query _instance;
+        public static Query Instance
+        {
+            get { return _instance ?? (_instance = new Query()); }
+            set { _instance = value; }
+        }
+
+        private Query()
+        {
+            
+        }
+
+        #endregion
+        
         public Word GetOrCreateWord(string text, bool increaseRepetition)
         {
-            var word = OracleDataLayer.Instance.Select(
-                (reader) =>
-                    {
-                        if (!reader.Read())
-                            return null;
-
-                        return new Word
-                            {
-                                Id = (int) reader[IdText],
-                                Text = (string) reader[WordText],
-                                Repetitions = (int) reader[RepetitionText]
-                            };
-                    }
-                // TODO : set query
-                , _getWordByWordTextStatement, new[] {WordText, text});
+            var word = OracleDataLayer.Instance.Select(ReadWord, _getWordByWordTextStatement, new[] {WordText, text});
 
             if (word == null)
             {
                 var repetition = increaseRepetition ? 1 : 0;
 
-                var id = OracleDataLayer.Instance.Select(
-                    (reader) =>
-                        {
-                            if (!reader.Read())
-                                return null;
-
-                            return (int?) reader["VAL"];
-                        }
-                    , _getSequenceNextVal, new[] {SequenceNameText, ""});
-
-
-                // TODO : create word (insert)
-                OracleDataLayer.Instance.DmlAction(_insertIntoWordsStatement, new[] {IdText, id.ToString()}, new[] {WordText, text}, new[] {RepetitionText, repetition.ToString()});
+                OracleDataLayer.Instance.DmlAction(_insertIntoWordsStatement, new[] {WordText, text},
+                    new[] {RepetitionText, repetition.ToString()});
             }
             else if (increaseRepetition)
             {
@@ -87,6 +80,19 @@ namespace Concord.DL
                     song.SongWords.Add(songWord);
                 }
             }
+        }
+
+        private Word ReadWord(OracleDataReader reader)
+        {
+            if (!reader.Read())
+                return null;
+
+            return new Word
+            {
+                Id = (int) reader[IdText],
+                Text = (string) reader[WordText],
+                Repetitions = (int) reader[RepetitionText]
+            };
         }
     }
 }
