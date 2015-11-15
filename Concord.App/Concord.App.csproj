@@ -163,7 +163,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Concord.DL\Concord.Dal.csproj">
+    <ProjectReference Include="..\Concord.Dal\Concord.Dal.csproj">
       <Project>{93570a87-02df-414b-87fc-96141a4307a5}</Project>
       <Name>Concord.Dal</Name>
     </ProjectReference>

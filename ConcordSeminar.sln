@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concord.App", "Concord.App\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concord.Entities", "Concord.Entities\Concord.Entities.csproj", "{C8DAC001-6FAA-4FDB-8186-9AF1B6A205F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concord.Dal", "Concord.DL\Concord.Dal.csproj", "{93570A87-02DF-414B-87FC-96141A4307A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concord.Dal", "Concord.Dal\Concord.Dal.csproj", "{93570A87-02DF-414B-87FC-96141A4307A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
