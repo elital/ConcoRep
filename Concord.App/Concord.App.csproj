@@ -74,6 +74,7 @@
     <Compile Include="ViewModels\ContextViewModel.cs" />
     <Compile Include="ViewModels\GlobalViewModel.cs" />
     <Compile Include="ViewModels\GroupsViewModel.cs" />
+    <Compile Include="ViewModels\LoadViewModel.cs" />
     <Compile Include="ViewModels\PhrasesViewModel.cs" />
     <Compile Include="ViewModels\RelationsViewModel.cs" />
     <Page Include="MainTabs\ContextControl.xaml">
