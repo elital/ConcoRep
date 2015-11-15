@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Sockets;
 using Concord.Entities;
-using Oracle.DataAccess.Client;
+using Oracle.ManagedDataAccess.Client;
 
 namespace Concord.Dal
 {

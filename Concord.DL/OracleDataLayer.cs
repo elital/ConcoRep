@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
-using Oracle.DataAccess.Client;
+using Oracle.ManagedDataAccess.Client;
 
 namespace Concord.Dal
 {
@@ -53,7 +54,16 @@ namespace Concord.Dal
                     foreach (var parameter in parameters)
                         command.Parameters.Add(parameter[0], parameter[1]);
 
-                int rowsInserted = command.ExecuteNonQuery();
+                var rowsInserted = 0;
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    command.Transaction = transaction;
+
+                    rowsInserted = command.ExecuteNonQuery();
+
+                    transaction.Commit();
+                }
                 
                 connection.Close();
 
