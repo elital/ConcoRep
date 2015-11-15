@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Linq;
 using Oracle.DataAccess.Client;
 
-namespace Concord.DL
+namespace Concord.Dal
 {
     public class OracleDataLayer
     {

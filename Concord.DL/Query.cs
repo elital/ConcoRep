@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using Concord.Entities;
 using Oracle.DataAccess.Client;
 
-namespace Concord.DL
+namespace Concord.Dal
 {
     public class Query
     {

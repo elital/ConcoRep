@@ -7,8 +7,8 @@
     <ProjectGuid>{93570A87-02DF-414B-87FC-96141A4307A5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Concord.DL</RootNamespace>
-    <AssemblyName>Concord.DL</AssemblyName>
+    <RootNamespace>Concord.Dal</RootNamespace>
+    <AssemblyName>Concord.Dal</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
