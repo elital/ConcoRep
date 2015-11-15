@@ -24,12 +24,13 @@ namespace Concord.App.ViewModels
                     Author = "jghgfg",
                     Album = "hey",
                     PublishDate = new DateTime(2015, 2, 26),
-                    Lyrics = new ObservableCollection<LyricsModel>()
-                        {
-                            new LyricsModel() {Id = 1, Line = 1, Column = 1, Word = new WordModel() {Id = 1, Word = "hey", Repetition = 2}},
-                            new LyricsModel() {Id = 2, Line = 1, Column = 2, Word = new WordModel() {Id = 2, Word = "you", Repetition = 7}},
-                            new LyricsModel() {Id = 3, Line = 2, Column = 1, Word = new WordModel() {Id = 3, Word = "bye", Repetition = 1}}
-                        }
+                    Text = $"hey you{Environment.NewLine}bye"
+                    //Lyrics = new ObservableCollection<LyricsModel>()
+                    //    {
+                    //        new LyricsModel() {Id = 1, Line = 1, Column = 1, Word = new WordModel() {Id = 1, Word = "hey", Repetition = 2}},
+                    //        new LyricsModel() {Id = 2, Line = 1, Column = 2, Word = new WordModel() {Id = 2, Word = "you", Repetition = 7}},
+                    //        new LyricsModel() {Id = 3, Line = 2, Column = 1, Word = new WordModel() {Id = 3, Word = "bye", Repetition = 1}}
+                    //    }
                 });
         }
 
@@ -64,12 +65,13 @@ namespace Concord.App.ViewModels
                     Author = "who wrote that song",
                     Album = "hey",
                     PublishDate = new DateTime(2015, 2, 26),
-                    Lyrics = new ObservableCollection<LyricsModel>()
-                        {
-                            new LyricsModel() {Id = 4, Line = 1, Column = 1, Word = new WordModel() {Id = 1, Word = "hey", Repetition = 2}},
-                            new LyricsModel() {Id = 5, Line = 1, Column = 2, Word = new WordModel() {Id = 2, Word = "you", Repetition = 7}},
-                            new LyricsModel() {Id = 6, Line = 2, Column = 1, Word = new WordModel() {Id = 4, Word = "boy", Repetition = 9}}
-                        }
+                    Text = $"hey you{Environment.NewLine}boy"
+                    //Lyrics = new ObservableCollection<LyricsModel>()
+                    //    {
+                    //        new LyricsModel() {Id = 4, Line = 1, Column = 1, Word = new WordModel() {Id = 1, Word = "hey", Repetition = 2}},
+                    //        new LyricsModel() {Id = 5, Line = 1, Column = 2, Word = new WordModel() {Id = 2, Word = "you", Repetition = 7}},
+                    //        new LyricsModel() {Id = 6, Line = 2, Column = 1, Word = new WordModel() {Id = 4, Word = "boy", Repetition = 9}}
+                    //    }
                 });
         }
     }

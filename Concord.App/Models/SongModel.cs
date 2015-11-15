@@ -64,34 +64,44 @@ namespace Concord.App.Models
             }
         }
 
-        public ObservableCollection<LyricsModel> Lyrics { get; set; }
+        //public ObservableCollection<LyricsModel> Lyrics { get; set; }
 
-
-        public override string ToString()
+        private string _text;
+        public string Text
         {
-            var text = string.Empty;
-            var lastLineNumber = 0;
-
-            foreach (var word in Lyrics.OrderBy(l=>l.Line).ThenBy(l=>l.Column).ToList())
+            get { return _text; }
+            set
             {
-                if (lastLineNumber == 0)
-                {
-                    lastLineNumber++;
-                    text = word.Word.Word;
-                }
-                else if (lastLineNumber == word.Line)
-                {
-                    text = string.Format("{0} {1}", text, word.Word.Word);
-                }
-                else
-                {
-                    text = string.Format("{0}{1}{2}", text, Environment.NewLine, word.Word.Word);
-                    lastLineNumber = word.Line;
-                }
+                _text = value;
+                OnPropertyChanged("Text");
             }
-
-            return text;
         }
+        
+        //public override string ToString()
+        //{
+        //    var text = string.Empty;
+        //    var lastLineNumber = 0;
+
+        //    foreach (var word in Lyrics.OrderBy(l=>l.Line).ThenBy(l=>l.Column).ToList())
+        //    {
+        //        if (lastLineNumber == 0)
+        //        {
+        //            lastLineNumber++;
+        //            text = word.Word.Word;
+        //        }
+        //        else if (lastLineNumber == word.Line)
+        //        {
+        //            text = string.Format("{0} {1}", text, word.Word.Word);
+        //        }
+        //        else
+        //        {
+        //            text = string.Format("{0}{1}{2}", text, Environment.NewLine, word.Word.Word);
+        //            lastLineNumber = word.Line;
+        //        }
+        //    }
+
+        //    return text;
+        //}
 
         #region INotifyPropertyChanged
 

@@ -20,7 +20,15 @@ namespace Concord.App.HiddenTabsData
         private ResultData()
         {
             Contexts = new List<ContextModel>();
-            Song = new SongModel{ Id = 1, Title = "asda", Author = "asdasd", Album = "asdasdasdad", PublishDate = DateTime.Now, Lyrics = new ObservableCollection<LyricsModel>()};
+            Song = new SongModel
+                {
+                    Id = 1,
+                    Title = "asda",
+                    Author = "asdasd",
+                    Album = "asdasdasdad",
+                    PublishDate = DateTime.Now,
+                    Text = $"la la la{Environment.NewLine}lalalala"
+                };
             
             Contexts.Add(new ContextModel
                 {
