@@ -162,6 +162,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Concord.DL\Concord.Dal.csproj">
+      <Project>{93570a87-02df-414b-87fc-96141a4307a5}</Project>
+      <Name>Concord.Dal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Concord.Entities\Concord.Entities.csproj">
+      <Project>{c8dac001-6faa-4fdb-8186-9af1b6a205f2}</Project>
+      <Name>Concord.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
