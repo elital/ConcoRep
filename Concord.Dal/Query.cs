@@ -45,11 +45,13 @@ namespace Concord.Dal
 
                 OracleDataLayer.Instance.DmlAction(_insertIntoWordsStatement, new[] {WordText, text},
                     new[] {RepetitionText, repetition.ToString()});
+                word = OracleDataLayer.Instance.Select(ReadWord, _getWordByWordTextStatement, new[] {WordText, text});
             }
             else if (increaseRepetition)
             {
                 // TODO : increase repetition (update)
                 OracleDataLayer.Instance.DmlAction(_increaseWordRepetitionStatement, new[] {IdText, word.Id.ToString()});
+                word.Repetitions++;
             }
 
             return word;
