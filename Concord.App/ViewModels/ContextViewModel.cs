@@ -17,6 +17,8 @@ namespace Concord.App.ViewModels
             Contexts = new ObservableCollection<ContextModel>();
         }
 
+        #region MainDockLoadedCommand
+
         private DelegateCommand mainDockLoadedCommand;
         public ICommand MainDockLoadedCommand
         {
@@ -42,8 +44,11 @@ namespace Concord.App.ViewModels
                 Contexts.AddRange(ResultData.Instance.Contexts);
         }
 
-        private DelegateCommand mainDockUnloadedCommand;
+        #endregion
 
+        #region MainDockUnloadedCommand
+
+        private DelegateCommand mainDockUnloadedCommand;
         public ICommand MainDockUnloadedCommand
         {
             get
@@ -66,5 +71,7 @@ namespace Concord.App.ViewModels
 
             ((MainWindow) Application.Current.MainWindow).HiddenTabFocusAllowed = false;
         }
+
+        #endregion
     }
 }

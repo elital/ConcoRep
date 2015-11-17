@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="LoadControl_OnLoaded">
@@ -14,6 +15,15 @@
     </TabItem.DataContext>
 
     <DockPanel Name="LoadPanel">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding MainDockLoadedCommand}"/>
+            </i:EventTrigger>
+            <i:EventTrigger EventName="Unloaded">
+                <i:InvokeCommandAction Command="{Binding MainDockUnloadedCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
         <Grid DockPanel.Dock="Top" Margin="0, 5, 0, 5">
             <Grid.Resources>
                 <Style TargetType="{x:Type TextBox}"><Setter Property="Margin" Value="0, 0, 0, 5" /></Style>
@@ -33,7 +43,7 @@
             </Grid.RowDefinitions>
 
             <Label Content="Song title:" Grid.Row="0" Grid.Column="0"/>
-            <TextBox Name="SongTitle" Text="{Binding Song.Title}" Grid.Row="0" Grid.Column="1" />
+            <TextBox Name="SongTitle" Text="{Binding Song.Title}" Grid.Row="0" Grid.Column="1"/>
             <Label Content="Author name:" Grid.Row="0" Grid.Column="3"/>
             <TextBox Name="AuthorName" Text="{Binding Song.Author}" Grid.Row="0" Grid.Column="4"/>
             <Label Content="Album name:" Grid.Row="1" Grid.Column="0"/>
@@ -44,10 +54,8 @@
 
         <DockPanel DockPanel.Dock="Bottom" >
             <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Name="LoadNewSong" Content="Load from file" Command="{Binding LoadNewSongCommand}" Padding="8, 2, 8, 2" Margin="0, 0, 10, 0"/>
-                <!--Click="LoadNewSong_OnClick"-->
-                <Button Name="SaveNewSong" Content="Save" Command="{Binding SaveNewSongCommand}" Padding="8, 2, 8, 2"/>
-                <!--Click="SaveNewSong_OnClick"-->
+                <Button Name="LoadNewSong" Content="Load from file" Command="{Binding LoadNewSongCommand}" Padding="8, 2, 8, 2" Margin="0, 0, 10, 0" Visibility="{Binding ButtonVisibility}"/>
+                <Button Name="SaveNewSong" Content="Save" Command="{Binding SaveNewSongCommand}" Padding="8, 2, 8, 2" Visibility="{Binding ButtonVisibility}"/>
             </StackPanel>
             <TextBox Text="{Binding Song.Text}" Name="LyricsText" Margin="5" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
         </DockPanel>

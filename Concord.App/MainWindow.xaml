@@ -40,15 +40,13 @@
                 </ControlTemplate>
             </TabControl.Template>
 
-            <mainTabs:GlobalControl Header="Global"/>
-            <mainTabs:GroupsControl Header="Groups"/>
-            <mainTabs:RelationsControl Header="Relations"/>
-            <mainTabs:PhrasesControl Header="Phrases"/>
-            <!-- View song tab (Readonly) -->
-            <mainTabs:LoadControl IsReadonly="True" GotKeyboardFocus="HiddenTab_OnGotKeyboardFocus"/>
-            <!-- Context view -->
-            <mainTabs:ContextControl GotKeyboardFocus="HiddenTab_OnGotKeyboardFocus"/>
-            <mainTabs:LoadControl Header="Load" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+            <mainTabs:GlobalControl x:Name="Global" Header="Global" TabIndex="0"/>
+            <mainTabs:GroupsControl x:Name="Groups" Header="Groups" TabIndex="1"/>
+            <mainTabs:RelationsControl x:Name="Relations" Header="Relations" TabIndex="2"/>
+            <mainTabs:PhrasesControl x:Name="Phrases" Header="Phrases" TabIndex="3"/>
+            <mainTabs:LoadControl x:Name="SongView" IsReadonly="True" GotKeyboardFocus="HiddenTab_OnGotKeyboardFocus" TabIndex="4"/>
+            <mainTabs:ContextControl x:Name="Context" GotKeyboardFocus="HiddenTab_OnGotKeyboardFocus" TabIndex="5"/>
+            <mainTabs:LoadControl x:Name="SongLoad" Header="Load" DockPanel.Dock="Right" HorizontalAlignment="Right" TabIndex="6"/>
         </TabControl>
     </DockPanel>
 </Window>

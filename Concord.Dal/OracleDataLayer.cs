@@ -23,7 +23,7 @@ namespace Concord.Dal
             _connectionString = ConfigurationManager.ConnectionStrings["ET"].ConnectionString;
         }
         
-        public T Select<T>(Func<OracleDataReader, T> handleResult, string statement, params string[][] parameters)
+        public T Select<T>(Func<OracleDataReader, T> handleResult, string statement, params KeyValuePair<string, object>[] parameters)
         {
             using (var connection = new OracleConnection { ConnectionString = _connectionString })
             {
@@ -32,7 +32,7 @@ namespace Concord.Dal
 
                 if (parameters != null)
                     foreach (var parameter in parameters)
-                        command.Parameters.Add(parameter[0], parameter[1]);
+                        command.Parameters.Add(parameter.Key, parameter.Value);
 
                 var reader = command.ExecuteReader();
                 var result = handleResult(reader);
@@ -43,16 +43,16 @@ namespace Concord.Dal
             }
         }
 
-        public int DmlAction(string statement, params string[][] parameters)
+        public int DmlAction(string statement, params KeyValuePair<string, object>[] parameters)
         {
             using (var connection = new OracleConnection { ConnectionString = _connectionString })
             {
                 connection.Open();
                 var command = new OracleCommand {Connection = connection, CommandText = statement};
-
+                
                 if (parameters != null)
                     foreach (var parameter in parameters)
-                        command.Parameters.Add(parameter[0], parameter[1]);
+                        command.Parameters.Add(parameter.Key, parameter.Value);
 
                 var rowsInserted = 0;
 

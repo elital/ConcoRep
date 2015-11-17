@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Concord.App
 {
@@ -20,8 +9,17 @@ namespace Concord.App
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Tab names
+        public string SongViewTabName => SongView.Name;
+        public string ContextTabName => Context.Name;
+        public string SongLoadTabName => SongLoad.Name;
+        #endregion
+        
         public MainWindow()
         {
+            // TODO : Move to the app start
+            SongMapping.MapSong();
+
             InitializeComponent();
             HiddenTabFocusAllowed = false;
         }
@@ -32,6 +30,25 @@ namespace Concord.App
         {
             if (!HiddenTabFocusAllowed)
                 MainTabControl.SelectedIndex = MainTabControl.Items.Count - 1;
+        }
+
+        public bool GotToTab(string tabName)
+        {
+            foreach (object item in MainTabControl.Items)
+            {
+                if (!(item is TabItem))
+                    continue;
+
+                var tab = (TabItem)item;
+
+                if (tab.Name == tabName)
+                {
+                    MainTabControl.SelectedIndex = tab.TabIndex;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     }

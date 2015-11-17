@@ -9,6 +9,8 @@ namespace Concord.App.Models
 {
     public class SongModel : INotifyPropertyChanged
     {
+        #region Properties
+
         private int _id;
         public int Id
         {
@@ -76,7 +78,9 @@ namespace Concord.App.Models
                 OnPropertyChanged("Text");
             }
         }
-        
+
+        #endregion
+
         //public override string ToString()
         //{
         //    var text = string.Empty;
@@ -102,6 +106,16 @@ namespace Concord.App.Models
 
         //    return text;
         //}
+
+        public void Copy(SongModel source)
+        {
+            Id = source.Id;
+            Title = source.Title;
+            Author = source.Author;
+            PublishDate = source.PublishDate;
+            Album = source.Album;
+            Text = source.Text;
+        }
 
         #region INotifyPropertyChanged
 

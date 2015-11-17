@@ -3,7 +3,10 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using AutoMapper;
+using Concord.App.HiddenTabsData;
 using Concord.App.Models;
+using Concord.Entities;
 using Microsoft.Practices.Prism.Commands;
 
 namespace Concord.App.ViewModels
@@ -12,18 +15,13 @@ namespace Concord.App.ViewModels
     {
         public SongModel Song { get; set; }
 
-        private Visibility _buttonVisibility;
-        public Visibility ButtonVisibility
-        {
-            get { return _buttonVisibility; }
-            set { _buttonVisibility = value; }
-        }
+        public bool IsReadonly { get; set; }
 
         public LoadViewModel()
         {
             Song = new SongModel { PublishDate = DateTime.Today };
         }
-
+        
         #region Load new song
 
         private DelegateCommand loadNewSongCommand;
@@ -121,7 +119,73 @@ namespace Concord.App.ViewModels
 
         public void SaveNewSongExecuted()
         {
-            throw new NotImplementedException();
+            var song = Dal.Creator.Instance.CreateSong(Mapper.Map<Song>(Song));
+            ResultData.Instance.Song = Mapper.Map<SongModel>(song);
+
+            var mainWindow = (MainWindow) Application.Current.MainWindow;
+
+            mainWindow.HiddenTabFocusAllowed = true;
+            mainWindow.GotToTab(mainWindow.SongViewTabName);
+        }
+
+        #endregion
+
+        #region MainDockLoadedCommand
+
+        private DelegateCommand mainDockLoadedCommand;
+        public ICommand MainDockLoadedCommand
+        {
+            get
+            {
+                if (mainDockLoadedCommand == null)
+                    mainDockLoadedCommand = new DelegateCommand(MainDockLoadedExecuted, MainDockLoadedCanExecute);
+
+                return mainDockLoadedCommand;
+            }
+        }
+
+        public bool MainDockLoadedCanExecute()
+        {
+            return true;
+        }
+
+        public void MainDockLoadedExecuted()
+        {
+            if (!IsReadonly)
+                return;
+
+            if (ResultData.Instance.Song != null && ResultData.Instance.Song.Id > 0)
+                Song.Copy(ResultData.Instance.Song);
+        }
+
+        #endregion
+
+        #region MainDockUnloadedCommand
+
+        private DelegateCommand mainDockUnloadedCommand;
+        public ICommand MainDockUnloadedCommand
+        {
+            get
+            {
+                if (mainDockUnloadedCommand == null)
+                    mainDockUnloadedCommand = new DelegateCommand(MainDockUnloadedExecuted, MainDockUnloadedCanExecute);
+
+                return mainDockUnloadedCommand;
+            }
+        }
+
+        public bool MainDockUnloadedCanExecute()
+        {
+            return true;
+        }
+
+        public void MainDockUnloadedExecuted()
+        {
+            if (!IsReadonly)
+                return;
+
+            ResultData.Instance.Song.Id = 0;
+            ((MainWindow)Application.Current.MainWindow).HiddenTabFocusAllowed = false;
         }
 
         #endregion

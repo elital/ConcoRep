@@ -1,20 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Concord.App.ViewModels;
 
 namespace Concord.App.MainTabs
 {
@@ -23,8 +10,11 @@ namespace Concord.App.MainTabs
     /// </summary>
     public partial class LoadControl : TabItem
     {
-        public static readonly DependencyProperty IsReadonlyProperty = DependencyProperty.RegisterAttached("IsReadonly", typeof(Boolean), typeof(LoadControl),
-            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+        #region IsReadonly
+
+        public static readonly DependencyProperty IsReadonlyProperty =
+            DependencyProperty.RegisterAttached("IsReadonly", typeof (Boolean), typeof (LoadControl),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
         
         public static void SetIsReadonly(UIElement element, bool value)
         {
@@ -42,6 +32,8 @@ namespace Concord.App.MainTabs
             set { SetValue(IsReadonlyProperty, value); }
         }
 
+        #endregion
+
         public LoadControl()
         {
             InitializeComponent();
@@ -50,9 +42,9 @@ namespace Concord.App.MainTabs
         private void LoadControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             if (IsReadonly)
-            {
                 SetReadOnly();
-            }
+
+            ((LoadViewModel) DataContext).IsReadonly = IsReadonly;
         }
 
         private void SetReadOnly()
