@@ -34,6 +34,11 @@ namespace Concord.App
 
         public bool GotToTab(string tabName)
         {
+            var tabItem = MainTabControl.SelectedItem as TabItem;
+
+            if (tabItem != null && tabItem.Name == tabName)
+                return false;
+
             foreach (object item in MainTabControl.Items)
             {
                 if (!(item is TabItem))
