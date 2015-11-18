@@ -9,7 +9,7 @@ namespace Concord.Entities
         public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
-        public DateTime PublishDate { get; set; }
+        public DateTime? PublishDate { get; set; }
         public string AlbumName { get; set; }
         public List<SongWord> SongWords { get; set; }
 
@@ -34,11 +34,11 @@ namespace Concord.Entities
                     }
                     else if (lastLineNumber == word.Line)
                     {
-                        _songText = string.Format("{0} {1}", _songText, word.Word.Text);
+                        _songText = $"{_songText} {word.Word.Text}";
                     }
                     else
                     {
-                        _songText = string.Format("{0}{1}{2}", _songText, Environment.NewLine, word.Word.Text);
+                        _songText = $"{_songText}{Environment.NewLine}{word.Word.Text}";
                         lastLineNumber = word.Line;
                     }
                 }

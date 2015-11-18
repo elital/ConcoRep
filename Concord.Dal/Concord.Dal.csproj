@@ -41,10 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Creator.cs" />
+    <Compile Include="QueryBase.cs" />
+    <Compile Include="SequenceQuery.cs" />
+    <Compile Include="SongWordEntity\SongWordCreator.cs" />
+    <Compile Include="SongWordEntity\SongWordQuery.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="SongEntity\SongCreator.cs" />
     <Compile Include="OracleDataLayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Query.cs" />
+    <Compile Include="SongEntity\SongQuery.cs" />
+    <Compile Include="WordEntity\WordCreator.cs" />
+    <Compile Include="WordEntity\WordQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Concord.Entities\Concord.Entities.csproj">

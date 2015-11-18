@@ -117,6 +117,16 @@ namespace Concord.App.Models
             Text = source.Text;
         }
 
+        public void Clear()
+        {
+            Id = 0;
+            Title = string.Empty;
+            Author = string.Empty;
+            PublishDate = DateTime.Today;
+            Album = string.Empty;
+            Text = string.Empty;
+        }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

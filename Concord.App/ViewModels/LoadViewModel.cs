@@ -6,6 +6,7 @@ using System.Windows.Input;
 using AutoMapper;
 using Concord.App.HiddenTabsData;
 using Concord.App.Models;
+using Concord.Dal.SongEntity;
 using Concord.Entities;
 using Microsoft.Practices.Prism.Commands;
 
@@ -119,8 +120,9 @@ namespace Concord.App.ViewModels
 
         public void SaveNewSongExecuted()
         {
-            var song = Dal.Creator.Instance.CreateSong(Mapper.Map<Song>(Song));
+            var song = SongCreator.Instance.Create(Mapper.Map<Song>(Song));
             ResultData.Instance.Song = Mapper.Map<SongModel>(song);
+            Song.Clear();
 
             var mainWindow = (MainWindow) Application.Current.MainWindow;
 
@@ -184,7 +186,7 @@ namespace Concord.App.ViewModels
             if (!IsReadonly)
                 return;
 
-            ResultData.Instance.Song.Id = 0;
+            ResultData.Instance.Song.Clear();
             ((MainWindow)Application.Current.MainWindow).HiddenTabFocusAllowed = false;
         }
 
