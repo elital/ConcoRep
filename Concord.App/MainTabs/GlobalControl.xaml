@@ -4,11 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
+             xmlns:local="clr-namespace:Concord.App.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
     <TabItem.DataContext>
         <viewModels:GlobalViewModel/>
     </TabItem.DataContext>
+    
+    <TabItem.Resources>
+        <local:ItemsCountToVisibilityConverter x:Key="ItemsCountToVisibilityConverter"/>
+    </TabItem.Resources>
     
     <DockPanel>
 
@@ -27,18 +34,18 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Margin="0, 5, 0, 5">Song title:</Label>
-            <TextBox Name="SongTitle" Grid.Row="0" Grid.Column="1" Margin="0, 5, 0, 5"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="0, 5, 0, 5" Text="{Binding SongSearch.Title}"/>
             <Label Grid.Row="0" Grid.Column="3" Margin="0, 5, 0, 5">Author name:</Label>
-            <TextBox Name="AuthorName" Grid.Row="0" Grid.Column="4" Margin="0, 5, 10, 5"/>
+            <TextBox Grid.Row="0" Grid.Column="4" Margin="0, 5, 10, 5" Text="{Binding SongSearch.Author}"/>
             <Label Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5">Album name:</Label>
-            <TextBox Name="AlbumName" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" Text="{Binding SongSearch.Album}"/>
             <Label Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5">Free text:</Label>
-            <TextBox Name="FreeText" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0, 0, 70, 5"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0, 0, 70, 5" Text="{Binding SongSearch.Text}"/>
             <Button Content="Go" Command="{Binding Path=GoCommand}" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="4" Margin="0, 0, 10, 5" Padding="15, 0, 15, 0"/>
 
         </Grid>
 
-        <ListView Margin="10" Name="SongsList" DockPanel.Dock="Top" ItemsSource="{Binding Path=Songs}">
+        <ListView Margin="10" DockPanel.Dock="Top" ItemsSource="{Binding Path=Songs}" SelectedItem="{Binding SelectedSong}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Title" Width="{Binding ElementName=col0, Path=ActualWidth}" DisplayMemberBinding="{Binding Title}" />
@@ -47,9 +54,14 @@
                     <GridViewColumn Header="Album Name" Width="{Binding ElementName=col3, Path=ActualWidth}" DisplayMemberBinding="{Binding Album}" />
                 </GridView>
             </ListView.View>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding DoubleClickSongCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </ListView>
 
-        <Grid Visibility="Hidden" Margin="10" DockPanel.Dock="Bottom">
+        <Grid Visibility="Hidden" Margin="15" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150*"/>
                 <ColumnDefinition Width="150*"/>
@@ -61,6 +73,6 @@
             <Label Grid.Column="2" x:Name="col2">CCC</Label>
             <Label Grid.Column="3" x:Name="col3">DDD</Label>
         </Grid>
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center">No songs to view . . .</Label>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Path=Songs.Count, Converter={StaticResource ItemsCountToVisibilityConverter}}" Content="No songs to view . . ."/>
     </DockPanel>
 </TabItem>

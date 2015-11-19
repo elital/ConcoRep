@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
-using Concord.App.Annotations;
+using AutoMapper;
+using Concord.App.HiddenTabsData;
 using Concord.App.Models;
+using Concord.Dal.SongEntity;
+using Concord.Entities;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 
@@ -10,69 +14,69 @@ namespace Concord.App.ViewModels
 {
     public class GlobalViewModel
     {
+        public SongModel SongSearch { get; set; }
+        
         public ObservableCollection<SongModel> Songs { get; set; }
+
+        public SongModel SelectedSong { get; set; }
 
         public GlobalViewModel()
         {
+            SongSearch = new SongModel();
             Songs = new ObservableCollection<SongModel>();
-
-            // TODO : REMOVE
-            Songs.Add(new SongModel
-                {
-                    Id = 1,
-                    Title = "asdasd",
-                    Author = "jghgfg",
-                    Album = "hey",
-                    PublishDate = new DateTime(2015, 2, 26),
-                    Text = $"hey you{Environment.NewLine}bye"
-                    //Lyrics = new ObservableCollection<LyricsModel>()
-                    //    {
-                    //        new LyricsModel() {Id = 1, Line = 1, Column = 1, Word = new WordModel() {Id = 1, Word = "hey", Repetition = 2}},
-                    //        new LyricsModel() {Id = 2, Line = 1, Column = 2, Word = new WordModel() {Id = 2, Word = "you", Repetition = 7}},
-                    //        new LyricsModel() {Id = 3, Line = 2, Column = 1, Word = new WordModel() {Id = 3, Word = "bye", Repetition = 1}}
-                    //    }
-                });
         }
 
-        private DelegateCommand goCommand;
-        public ICommand GoCommand
-        {
-            get
-            {
-                if (goCommand == null)
-                    goCommand = new DelegateCommand(GoExecuted, GoCanExecute);
+        #region Go button
+        
+        private DelegateCommand _goCommand;
+        public ICommand GoCommand => _goCommand ?? (_goCommand = new DelegateCommand(GoExecuted, GoCanExecute));
 
-                return goCommand;
-            }
-        }
-
-        public bool GoCanExecute()
+        private bool GoCanExecute()
         {
             return true;
         }
 
-        public void GoExecuted()
+        private void GoExecuted()
         {
-            // TODO : fetch results from db
-
-            //Songs.Clear();
-            //Songs.AddRange( from DB );
-
-            Songs.Add(new SongModel
-                {
-                    Id = 2,
-                    Title = "hello world",
-                    Author = "who wrote that song",
-                    Album = "hey",
-                    PublishDate = new DateTime(2015, 2, 26),
-                    Text = $"hey you{Environment.NewLine}boy"
-                    //Lyrics = new ObservableCollection<LyricsModel>()
-                    //    {
-                    //        new LyricsModel() {Id = 4, Line = 1, Column = 1, Word = new WordModel() {Id = 1, Word = "hey", Repetition = 2}},
-                    //        new LyricsModel() {Id = 5, Line = 1, Column = 2, Word = new WordModel() {Id = 2, Word = "you", Repetition = 7}},
-                    //        new LyricsModel() {Id = 6, Line = 2, Column = 1, Word = new WordModel() {Id = 4, Word = "boy", Repetition = 9}}
-                    //    }
-                });
+            var query = Mapper.Map<SongModel, SongQuery>(SongSearch);
+            Songs.Clear();
+            Songs.AddRange(query.Get().ToList().Select(Mapper.Map<Song, SongModel>));
         }
+
+        #endregion
+
+        #region Double click song
+
+        private DelegateCommand _doubleClickSongCommand;
+
+        public ICommand DoubleClickSongCommand => _doubleClickSongCommand ??
+                                                  (_doubleClickSongCommand = new DelegateCommand(DoubleClickSongExecuted, DoubleClickSongCanExecute));
+
+        private bool DoubleClickSongCanExecute()
+        {
+            return true;
+        }
+
+        private void DoubleClickSongExecuted()
+        {
+            if (!Songs.Any())
+            {
+                // TODO : set error
+                return;
+            }
+
+            if (SelectedSong == null)
+            {
+                // TODO : set error
+                return;
+            }
+
+            ResultData.Instance.Song.Copy(SelectedSong);
+            var mainWindow = (MainWindow) Application.Current.MainWindow;
+            mainWindow.HiddenTabFocusAllowed = true;
+            mainWindow.GotToTab(mainWindow.SongViewTabName);
+        }
+
+        #endregion
     }
 }

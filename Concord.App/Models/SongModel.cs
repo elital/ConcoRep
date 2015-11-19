@@ -44,8 +44,8 @@ namespace Concord.App.Models
             }
         }
 
-        private DateTime _publishDate;
-        public DateTime PublishDate
+        private DateTime? _publishDate;
+        public DateTime? PublishDate
         {
             get { return _publishDate; }
             set

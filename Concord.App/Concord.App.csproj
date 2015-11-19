@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ItemsCountToVisibilityConverter.cs" />
     <Compile Include="HiddenTabsData\ResultData.cs" />
     <Compile Include="SongMapping.cs" />
     <Compile Include="Models\ContextModel.cs" />
