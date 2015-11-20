@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Concord.App.HiddenTabsData;
 using Concord.App.Models;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
@@ -113,8 +112,8 @@ namespace Concord.App.ViewModels
 
             var newPair = new PairModel
                 {
-                    FirstWord = new WordModel {Id = _wordIdTemp++, Word = NewData.FirstWord, Repetition = 0},
-                    SecondWord = new WordModel {Id = _wordIdTemp++, Word = NewData.SecondWord, Repetition = 0}
+                    FirstWord = new WordModel {Id = _wordIdTemp++, Word = NewData.FirstWord, Repetitions = 0},
+                    SecondWord = new WordModel {Id = _wordIdTemp++, Word = NewData.SecondWord, Repetitions = 0}
                 };
             Relations.Single(r => r.Id == SelectedRelation.Id).Pairs.Add(newPair);
             Pairs.Add(newPair);
@@ -176,6 +175,14 @@ namespace Concord.App.ViewModels
 
             ((MainWindow)Application.Current.MainWindow).HiddenTabFocusAllowed = true;
             ((MainWindow)Application.Current.MainWindow).MainTabControl.SelectedIndex = 5;
+        }
+
+        public void AppendWord(WordModel word)
+        {
+            if (string.IsNullOrEmpty(NewData.FirstWord))
+                NewData.FirstWord = word.Word;
+            else
+                NewData.SecondWord = word.Word;
         }
     }
 }

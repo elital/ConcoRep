@@ -28,14 +28,14 @@ namespace Concord.App.Models
             }
         }
 
-        private int _repetition;
-        public int Repetition
+        private int? _repetitions;
+        public int? Repetitions
         {
-            get { return _repetition; }
+            get { return _repetitions; }
             set
             {
-                _repetition = value;
-                OnPropertyChanged("Repetition");
+                _repetitions = value;
+                OnPropertyChanged("Repetitions");
             }
         }
 

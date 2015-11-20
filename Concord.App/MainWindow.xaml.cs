@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Concord.App.Controls.MainTabs;
 
 namespace Concord.App
 {
@@ -14,12 +16,13 @@ namespace Concord.App
         public string ContextTabName => Context.Name;
         public string SongLoadTabName => SongLoad.Name;
         #endregion
-        
+
+        public BaseTabItem SelectedTab => MainTabControl.SelectedItem as BaseTabItem;
+
+        public Action RefreshWordAction { get; set; }
+
         public MainWindow()
         {
-            // TODO : Move to the app start
-            SongMapping.MapSong();
-
             InitializeComponent();
             HiddenTabFocusAllowed = false;
         }
@@ -55,6 +58,5 @@ namespace Concord.App
 
             return false;
         }
-
     }
 }

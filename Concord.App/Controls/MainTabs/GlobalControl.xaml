@@ -1,4 +1,4 @@
-﻿<TabItem x:Class="Concord.App.MainTabs.GlobalControl"
+﻿<mainTabs:BaseTabItem x:Class="Concord.App.Controls.MainTabs.GlobalControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,6 +6,7 @@
              xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
              xmlns:local="clr-namespace:Concord.App.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mainTabs="clr-namespace:Concord.App.Controls.MainTabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
@@ -48,10 +49,10 @@
         <ListView Margin="10" DockPanel.Dock="Top" ItemsSource="{Binding Path=Songs}" SelectedItem="{Binding SelectedSong}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Title" Width="{Binding ElementName=col0, Path=ActualWidth}" DisplayMemberBinding="{Binding Title}" />
-                    <GridViewColumn Header="Author" Width="{Binding ElementName=col1, Path=ActualWidth}" DisplayMemberBinding="{Binding Author}" />
-                    <GridViewColumn Header="Publish Date" Width="{Binding ElementName=col2, Path=ActualWidth}" DisplayMemberBinding="{Binding PublishDate}" />
-                    <GridViewColumn Header="Album Name" Width="{Binding ElementName=col3, Path=ActualWidth}" DisplayMemberBinding="{Binding Album}" />
+                    <GridViewColumn Header="Title" Width="{Binding ElementName=Col0, Path=ActualWidth}" DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn Header="Author" Width="{Binding ElementName=Col1, Path=ActualWidth}" DisplayMemberBinding="{Binding Author}" />
+                    <GridViewColumn Header="Publish Date" Width="{Binding ElementName=Col2, Path=ActualWidth}" DisplayMemberBinding="{Binding PublishDate}" />
+                    <GridViewColumn Header="Album Name" Width="{Binding ElementName=Col3, Path=ActualWidth}" DisplayMemberBinding="{Binding Album}" />
                 </GridView>
             </ListView.View>
             <i:Interaction.Triggers>
@@ -68,11 +69,11 @@
                 <ColumnDefinition Width="90*"/>
                 <ColumnDefinition Width="150*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" x:Name="col0">AAA</Label>
-            <Label Grid.Column="1" x:Name="col1">BBB</Label>
-            <Label Grid.Column="2" x:Name="col2">CCC</Label>
-            <Label Grid.Column="3" x:Name="col3">DDD</Label>
+            <Label Grid.Column="0" x:Name="Col0">AAA</Label>
+            <Label Grid.Column="1" x:Name="Col1">BBB</Label>
+            <Label Grid.Column="2" x:Name="Col2">CCC</Label>
+            <Label Grid.Column="3" x:Name="Col3">DDD</Label>
         </Grid>
         <Label HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Path=Songs.Count, Converter={StaticResource ItemsCountToVisibilityConverter}}" Content="No songs to view . . ."/>
     </DockPanel>
-</TabItem>
+</mainTabs:BaseTabItem>

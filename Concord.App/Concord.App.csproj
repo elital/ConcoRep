@@ -72,7 +72,12 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ItemsCountToVisibilityConverter.cs" />
     <Compile Include="HiddenTabsData\ResultData.cs" />
-    <Compile Include="SongMapping.cs" />
+    <Compile Include="Controls\MainTabs\BaseTabItem.cs" />
+    <Compile Include="Controls\WordsListControl.xaml.cs">
+      <DependentUpon>WordsListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\SongMapping.cs" />
+    <Compile Include="Mapping\WordMapping.cs" />
     <Compile Include="Models\ContextModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\PhraseModel.cs" />
@@ -83,27 +88,32 @@
     <Compile Include="ViewModels\LoadViewModel.cs" />
     <Compile Include="ViewModels\PhrasesViewModel.cs" />
     <Compile Include="ViewModels\RelationsViewModel.cs" />
-    <Page Include="MainTabs\ContextControl.xaml">
+    <Compile Include="ViewModels\WordsListViewModel.cs" />
+    <Page Include="Controls\MainTabs\ContextControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainTabs\GlobalControl.xaml">
+    <Page Include="Controls\MainTabs\GlobalControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainTabs\GroupsControl.xaml">
+    <Page Include="Controls\MainTabs\GroupsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainTabs\LoadControl.xaml">
+    <Page Include="Controls\MainTabs\LoadControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainTabs\PhrasesControl.xaml">
+    <Page Include="Controls\MainTabs\PhrasesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainTabs\RelationsControl.xaml">
+    <Page Include="Controls\MainTabs\RelationsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WordsListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,22 +125,22 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainTabs\ContextControl.xaml.cs">
+    <Compile Include="Controls\MainTabs\ContextControl.xaml.cs">
       <DependentUpon>ContextControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainTabs\GlobalControl.xaml.cs">
+    <Compile Include="Controls\MainTabs\GlobalControl.xaml.cs">
       <DependentUpon>GlobalControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainTabs\GroupsControl.xaml.cs">
+    <Compile Include="Controls\MainTabs\GroupsControl.xaml.cs">
       <DependentUpon>GroupsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainTabs\LoadControl.xaml.cs">
+    <Compile Include="Controls\MainTabs\LoadControl.xaml.cs">
       <DependentUpon>LoadControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainTabs\PhrasesControl.xaml.cs">
+    <Compile Include="Controls\MainTabs\PhrasesControl.xaml.cs">
       <DependentUpon>PhrasesControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainTabs\RelationsControl.xaml.cs">
+    <Compile Include="Controls\MainTabs\RelationsControl.xaml.cs">
       <DependentUpon>RelationsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">

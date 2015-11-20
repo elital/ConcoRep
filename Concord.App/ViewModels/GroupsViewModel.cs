@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using Concord.App.Models;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
@@ -34,24 +31,19 @@ namespace Concord.App.ViewModels
             SelectedGroup = Groups.FirstOrDefault() ?? new GroupModel();
         }
 
-        private DelegateCommand createGroupCommand;
-        public ICommand CreateGroupCommand
-        {
-            get
-            {
-                if (createGroupCommand == null)
-                    createGroupCommand = new DelegateCommand(CreateGroupExecuted, CreateGroupCanExecute);
+        #region Create group command
 
-                return createGroupCommand;
-            }
-        }
+        private DelegateCommand _createGroupCommand;
 
-        public bool CreateGroupCanExecute()
+        public ICommand CreateGroupCommand => _createGroupCommand ??
+                                              (_createGroupCommand = new DelegateCommand(CreateGroupExecuted, CreateGroupCanExecute));
+
+        private bool CreateGroupCanExecute()
         {
             return true;
         }
 
-        public void CreateGroupExecuted()
+        private void CreateGroupExecuted()
         {
             if (string.IsNullOrEmpty(NewData.GroupName))
             {
@@ -65,33 +57,28 @@ namespace Concord.App.ViewModels
                 return;
             }
 
-            // TODO : create real group
-
-            var newGroup = new GroupModel {Name = NewData.GroupName, Id = _groupIdTemp++, Words = new ObservableCollection<WordModel>()};
+            // TODO : create real group - not necessary
+            
+            var newGroup = new GroupModel {Name = NewData.GroupName, Words = new ObservableCollection<WordModel>()};
             Groups.Add(newGroup);
             NewData.GroupName = string.Empty;
             SelectedGroup = newGroup;
             SelectedGroupExecuted();
         }
 
-        private DelegateCommand addWordCommand;
-        public ICommand AddWordCommand
-        {
-            get
-            {
-                if (addWordCommand == null)
-                    addWordCommand = new DelegateCommand(AddWordExecuted, AddWordCanExecute);
+        #endregion
 
-                return addWordCommand;
-            }
-        }
+        #region Add word command
 
-        public bool AddWordCanExecute()
+        private DelegateCommand _addWordCommand;
+        public ICommand AddWordCommand => _addWordCommand ?? (_addWordCommand = new DelegateCommand(AddWordExecuted, AddWordCanExecute));
+
+        private bool AddWordCanExecute()
         {
             return true;
         }
 
-        public void AddWordExecuted()
+        private void AddWordExecuted()
         {
             if (string.IsNullOrEmpty(SelectedGroup.Name) || string.IsNullOrEmpty(NewData.Word))
             {
@@ -105,14 +92,16 @@ namespace Concord.App.ViewModels
                 return;
             }
 
-            // TODO : create real word
-            // TODO : connect new word to the group
+            // TODO : get or create word - inside new group word
+            // TODO : create real group word
 
-            var newGroupWord = new WordModel {Id = _wordIdTemp++, Word = NewData.Word, Repetition = 0};
+            var newGroupWord = new WordModel {Id = _wordIdTemp++, Word = NewData.Word, Repetitions = 0};
             Groups.Single(g => g.Id == SelectedGroup.Id).Words.Add(newGroupWord);
             Words.Add(newGroupWord);
             NewData.Word = string.Empty;
         }
+
+        #endregion
 
         private DelegateCommand selectedGroupCommand;
         public ICommand SelectedGroupCommand
@@ -169,6 +158,11 @@ namespace Concord.App.ViewModels
 
             ((MainWindow) Application.Current.MainWindow).HiddenTabFocusAllowed = true;
             ((MainWindow) Application.Current.MainWindow).MainTabControl.SelectedIndex = 5;
+        }
+
+        public void AppendWord(WordModel word)
+        {
+            NewData.Word = word.Word;
         }
     }
 }

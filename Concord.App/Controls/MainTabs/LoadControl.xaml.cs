@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Concord.App.ViewModels;
 
-namespace Concord.App.MainTabs
+namespace Concord.App.Controls.MainTabs
 {
     /// <summary>
     /// Interaction logic for LoadControl.xaml

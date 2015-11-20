@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Concord.App.MainTabs
+namespace Concord.App.Controls.MainTabs
 {
     /// <summary>
     /// Interaction logic for ContextControl.xaml

@@ -3,7 +3,7 @@ using Concord.App.Models;
 using Concord.Dal.SongEntity;
 using Concord.Entities;
 
-namespace Concord.App
+namespace Concord.App.Mapping
 {
     public static class SongMapping
     {

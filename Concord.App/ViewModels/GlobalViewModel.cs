@@ -78,5 +78,12 @@ namespace Concord.App.ViewModels
         }
 
         #endregion
+
+        public void AppendWord(WordModel word)
+        {
+            SongSearch.Text = string.IsNullOrEmpty(SongSearch.Text)
+                ? word.Word
+                : $"{SongSearch.Text} {word.Word}";
+        }
     }
 }
