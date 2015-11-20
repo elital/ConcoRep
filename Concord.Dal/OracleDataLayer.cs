@@ -2,73 +2,78 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
 using Oracle.ManagedDataAccess.Client;
 
 namespace Concord.Dal
 {
     public class OracleDataLayer
     {
-        private static OracleDataLayer _instance;
-        public static OracleDataLayer Instance
-        {
-            get { return _instance ?? (_instance = new OracleDataLayer()); }
-            set { _instance = value; }
-        }
-
+        private OracleConnection _connection;
         private readonly string _connectionString;
+
+        private static OracleDataLayer _instance;
+        public static OracleDataLayer Instance => _instance ?? (_instance = new OracleDataLayer());
 
         private OracleDataLayer()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["ET"].ConnectionString;
         }
-        
+
+        public void Connect()
+        {
+            _connection = new OracleConnection(_connectionString);
+            _connection.Open();
+        }
+
+        public void Disconnect()
+        {
+            _connection.Close();
+        }
+
         public T Select<T>(Func<OracleDataReader, T> handleResult, string statement, params KeyValuePair<string, object>[] parameters)
         {
-            using (var connection = new OracleConnection { ConnectionString = _connectionString })
-            {
-                connection.Open();
-                var command = new OracleCommand { Connection = connection, CommandText = statement };
+            CheckConnection();
 
-                if (parameters != null)
-                    foreach (var parameter in parameters)
-                        command.Parameters.Add(parameter.Key, parameter.Value);
+            var command = new OracleCommand {Connection = _connection, CommandText = statement};
 
-                var reader = command.ExecuteReader();
-                var result = handleResult(reader);
+            if (parameters != null)
+                foreach (var parameter in parameters)
+                    command.Parameters.Add(parameter.Key, parameter.Value);
 
-                connection.Close();
-
-                return result;
-            }
+            var reader = command.ExecuteReader();
+            var result = handleResult(reader);
+            
+            return result;
         }
 
         public int DmlAction(string statement, params KeyValuePair<string, object>[] parameters)
         {
-            using (var connection = new OracleConnection { ConnectionString = _connectionString })
+            CheckConnection();
+
+            var command = new OracleCommand {Connection = _connection, CommandText = statement};
+
+            if (parameters != null)
+                foreach (var parameter in parameters)
+                    command.Parameters.Add(parameter.Key, parameter.Value);
+
+            int rowsInserted;
+
+            using (var transaction = _connection.BeginTransaction())
             {
-                connection.Open();
-                var command = new OracleCommand {Connection = connection, CommandText = statement};
-                
-                if (parameters != null)
-                    foreach (var parameter in parameters)
-                        command.Parameters.Add(parameter.Key, parameter.Value);
+                command.Transaction = transaction;
 
-                var rowsInserted = 0;
+                rowsInserted = command.ExecuteNonQuery();
 
-                using (var transaction = connection.BeginTransaction())
-                {
-                    command.Transaction = transaction;
-
-                    rowsInserted = command.ExecuteNonQuery();
-
-                    transaction.Commit();
-                }
-                
-                connection.Close();
-
-                return rowsInserted;
+                transaction.Commit();
             }
+
+            return rowsInserted;
+        }
+
+        private void CheckConnection()
+        {
+            if (_connection == null || _connection.State != ConnectionState.Open)
+                throw new NotImplementedException("connection is not open");
         }
     }
 }

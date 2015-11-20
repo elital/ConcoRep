@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
+using Concord.App.Mapping;
+using Concord.Dal;
 
 namespace Concord.App
 {
@@ -13,5 +11,29 @@ namespace Concord.App
     /// </summary>
     public partial class App : Application
     {
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            SongMapping.MapSong();
+            WordMapping.MapWord();
+
+            OracleDataLayer.Instance.Connect();
+        }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            ClosingActions();
+        }
+
+        private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"An error occured.{Environment.NewLine}The app will close now.", "Oops...", MessageBoxButton.OK, MessageBoxImage.Error);
+            ClosingActions();
+            Current.MainWindow.Close();
+        }
+
+        private void ClosingActions()
+        {
+            OracleDataLayer.Instance.Disconnect();
+        }
     }
 }
