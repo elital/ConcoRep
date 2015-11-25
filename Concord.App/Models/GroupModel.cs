@@ -7,17 +7,6 @@ namespace Concord.App.Models
 {
     public class GroupModel : INotifyPropertyChanged
     {
-        private int _id;
-        public int Id
-        {
-            get { return _id; }
-            set
-            {
-                _id = value;
-                OnPropertyChanged("Id");
-            }
-        }
-
         private string _name;
         public string Name
         {

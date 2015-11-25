@@ -15,6 +15,8 @@ namespace Concord.App
         {
             SongMapping.MapSong();
             WordMapping.MapWord();
+            GroupMapping.MapGroup();
+            ContextMapping.MapContext();
 
             OracleDataLayer.Instance.Connect();
         }

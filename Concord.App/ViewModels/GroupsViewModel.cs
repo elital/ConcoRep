@@ -1,8 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using AutoMapper;
+using Concord.App.HiddenTabsData;
 using Concord.App.Models;
+using Concord.Dal.General;
+using Concord.Dal.GroupEntity;
+using Concord.Entities;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 
@@ -30,6 +36,26 @@ namespace Concord.App.ViewModels
             Words = new ObservableCollection<WordModel>();
             SelectedGroup = Groups.FirstOrDefault() ?? new GroupModel();
         }
+
+        #region MainDockLoadedCommand
+
+        private DelegateCommand _mainDockLoadedCommand;
+
+        public ICommand MainDockLoadedCommand => _mainDockLoadedCommand ??
+                                                 (_mainDockLoadedCommand = new DelegateCommand(MainDockLoadedExecuted, MainDockLoadedCanExecute));
+        
+        private bool MainDockLoadedCanExecute()
+        {
+            return true;
+        }
+
+        private void MainDockLoadedExecuted()
+        {
+            Groups.Clear();
+            Groups.AddRange(Mapper.Map<List<GroupModel>>(new GroupQuery().Get()));
+        }
+
+        #endregion
 
         #region Create group command
 
@@ -64,6 +90,8 @@ namespace Concord.App.ViewModels
             NewData.GroupName = string.Empty;
             SelectedGroup = newGroup;
             SelectedGroupExecuted();
+
+            // TODO : Set message - the group will be created with it's first word only
         }
 
         #endregion
@@ -71,7 +99,9 @@ namespace Concord.App.ViewModels
         #region Add word command
 
         private DelegateCommand _addWordCommand;
-        public ICommand AddWordCommand => _addWordCommand ?? (_addWordCommand = new DelegateCommand(AddWordExecuted, AddWordCanExecute));
+
+        public ICommand AddWordCommand => _addWordCommand ??
+                                          (_addWordCommand = new DelegateCommand(AddWordExecuted, AddWordCanExecute));
 
         private bool AddWordCanExecute()
         {
@@ -95,55 +125,50 @@ namespace Concord.App.ViewModels
             // TODO : get or create word - inside new group word
             // TODO : create real group word
 
-            var newGroupWord = new WordModel {Id = _wordIdTemp++, Word = NewData.Word, Repetitions = 0};
-            Groups.Single(g => g.Id == SelectedGroup.Id).Words.Add(newGroupWord);
-            Words.Add(newGroupWord);
+            var word = Mapper.Map<Word, WordModel>(GroupCreator.Instance.CreateGroupWord(SelectedGroup.Name, NewData.Word));
+            Groups.Single(g => g.Name == SelectedGroup.Name).Words.Add(word);
+            Words.Add(word);
             NewData.Word = string.Empty;
         }
 
         #endregion
 
-        private DelegateCommand selectedGroupCommand;
-        public ICommand SelectedGroupCommand
-        {
-            get
-            {
-                if (selectedGroupCommand == null)
-                    selectedGroupCommand = new DelegateCommand(SelectedGroupExecuted, SelectedGroupCanExecute);
+        #region Selected group command
 
-                return selectedGroupCommand;
-            }
-        }
+        private DelegateCommand _selectedGroupCommand;
 
-        public bool SelectedGroupCanExecute()
+        public ICommand SelectedGroupCommand => _selectedGroupCommand ??
+                                                (_selectedGroupCommand = new DelegateCommand(SelectedGroupExecuted, SelectedGroupCanExecute));
+
+        private bool SelectedGroupCanExecute()
         {
             return true;
         }
 
-        public void SelectedGroupExecuted()
+        private void SelectedGroupExecuted()
         {
             Words.Clear();
-            Words.AddRange(SelectedGroup.Words);
+
+            if (SelectedGroup != null)
+                Words.AddRange(SelectedGroup.Words);
         }
 
-        private DelegateCommand doubleClickGroupCommand;
-        public ICommand DoubleClickGroupCommand
-        {
-            get
-            {
-                if (doubleClickGroupCommand == null)
-                    doubleClickGroupCommand = new DelegateCommand(DoubleClickGroupExecuted, DoubleClickGroupCanExecute);
+        #endregion
 
-                return doubleClickGroupCommand;
-            }
-        }
+        #region Double-click group command
 
-        public bool DoubleClickGroupCanExecute()
+        private DelegateCommand _doubleClickGroupCommand;
+
+        public ICommand DoubleClickGroupCommand =>
+            _doubleClickGroupCommand ??
+            (_doubleClickGroupCommand = new DelegateCommand(DoubleClickGroupExecuted, DoubleClickGroupCanExecute));
+
+        private bool DoubleClickGroupCanExecute()
         {
             return true;
         }
 
-        public void DoubleClickGroupExecuted()
+        private void DoubleClickGroupExecuted()
         {
             if (!Groups.Any())
                 return;
@@ -153,12 +178,16 @@ namespace Concord.App.ViewModels
                 // TODO : set error
                 return;
             }
+            
+            var contexts = new ContextQuery {GroupName = SelectedGroup.Name}.Get();
+            ResultData.Instance.Contexts = Mapper.Map<List<ContextModel>>(contexts);
 
-            // TODO : fetch group contexts
-
-            ((MainWindow) Application.Current.MainWindow).HiddenTabFocusAllowed = true;
-            ((MainWindow) Application.Current.MainWindow).MainTabControl.SelectedIndex = 5;
+            var main = (MainWindow) Application.Current.MainWindow;
+            main.HiddenTabFocusAllowed = true;
+            main.GotToTab(main.ContextTabName);
         }
+
+        #endregion
 
         public void AppendWord(WordModel word)
         {

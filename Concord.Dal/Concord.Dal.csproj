@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\ContextQuery.cs" />
+    <Compile Include="GroupEntity\GroupCreator.cs" />
+    <Compile Include="GroupEntity\GroupQuery.cs" />
     <Compile Include="QueryBase.cs" />
     <Compile Include="SequenceQuery.cs" />
     <Compile Include="SongWordEntity\SongWordCreator.cs" />

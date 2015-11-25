@@ -4,10 +4,13 @@ namespace Concord.Dal
 {
     public class SequenceQuery
     {
+        private const string SongSequenceName = "SONGS_S";
+        private const string SongWordSequenceName = "SONG_WORDS_S";
+        private const string WordSequenceName = "WORDS_S";
+        private const string WordGroupSequenceName = "WORD_GROUPS_S";
+
         private const string SequenceValueColumn = "VAL";
-        private readonly string _getNextSongIdStatement = $"select SONGS_S.NEXTVAL {SequenceValueColumn} from dual";
-        private readonly string _getNextSongWordIdStatement = $"select SONG_WORDS_S.NEXTVAL {SequenceValueColumn} from dual";
-        private readonly string _getNextWordIdStatement = $"select WORDS_S.NEXTVAL {SequenceValueColumn} from dual";
+        private readonly string _getNextSequenceIdStatement = "select {0}.NEXTVAL {1} from dual";
 
         #region Singleton
 
@@ -24,25 +27,27 @@ namespace Concord.Dal
 
         public int GetSongId()
         {
-            return OracleDataLayer.Instance.Select(ReadSequenceValue, _getNextSongIdStatement);
-            //return GetNextId(_getNextSongIdStatement);
+            return GetNextId(SongSequenceName);
         }
-
-        //private int GetNextId(string statement)
-        //{
-        //    return OracleDataLayer.Instance.Select(ReadSequenceValue, statement);
-        //}
 
         public int GetSongWordId()
         {
-            return OracleDataLayer.Instance.Select(ReadSequenceValue, _getNextSongWordIdStatement);
-            //return GetNextId(_getNextSongWordIdStatement);
+            return GetNextId(SongWordSequenceName);
         }
 
         public int GetWordId()
         {
-            return OracleDataLayer.Instance.Select(ReadSequenceValue, _getNextWordIdStatement);
-            //return GetNextId(_getNextWordIdStatement);
+            return GetNextId(WordSequenceName);
+        }
+
+        public int GetGroupWordId()
+        {
+            return GetNextId(WordGroupSequenceName);
+        }
+
+        private int GetNextId(string sequenceName)
+        {
+            return OracleDataLayer.Instance.Select(ReadSequenceValue, string.Format(_getNextSequenceIdStatement, sequenceName, SequenceValueColumn));
         }
 
         private int ReadSequenceValue(OracleDataReader reader)

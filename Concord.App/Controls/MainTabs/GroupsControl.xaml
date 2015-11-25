@@ -14,6 +14,12 @@
     </TabItem.DataContext>
 
     <DockPanel>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding MainDockLoadedCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.Resources>
                 <Style TargetType="{x:Type TextBox}">
@@ -36,10 +42,10 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Group Name:</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=NewData.GroupName, Mode=TwoWay}"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=NewData.GroupName}"/>
             <Button Content="Add" Command="{Binding Path=CreateGroupCommand}" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0"/>
             <Label Grid.Row="1" Grid.Column="0">Word:</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=NewData.Word, Mode=TwoWay}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=NewData.Word}"/>
             <Button Content="Add" Command="{Binding Path=AddWordCommand}" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left" Margin="0, 0, 0, 5" Padding="10, 0, 10, 0"/>
 
         </Grid>

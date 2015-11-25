@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Phrase.cs" />
     <Compile Include="Relation.cs" />

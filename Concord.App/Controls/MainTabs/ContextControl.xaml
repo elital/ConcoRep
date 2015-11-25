@@ -6,6 +6,7 @@
              xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
              xmlns:models="clr-namespace:Concord.App.Models"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converters="clr-namespace:Concord.App.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -17,6 +18,10 @@
         <ControlTemplate/>
     </TabItem.Template>
 
+    <TabItem.Resources>
+        <converters:ItemsCountToVisibilityConverter x:Key="ItemsCountToVisibilityConverter"/>
+    </TabItem.Resources>
+    
     <DockPanel>
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Loaded">
@@ -30,7 +35,7 @@
         <ListView Margin="10" DockPanel.Dock="Top" ItemsSource="{Binding Contexts}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Details">
+                    <GridViewColumn Header="Details" Width="{Binding ElementName=Col0, Path=ActualWidth}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate DataType="models:ContextModel">
                                 <DockPanel>
@@ -64,10 +69,10 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Context">
+                    <GridViewColumn Header="Context" Width="{Binding ElementName=Col1, Path=ActualWidth}">
                         <!--Width="{Binding ElementName=col1, Path=ActualWidth}">-->
                         <GridViewColumn.CellTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="models:ContextModel">
                                 <StackPanel VerticalAlignment="Top">
                                     <Label Content="{Binding Path=ContextLine1}" />
                                     <Label Content="{Binding Path=ContextLine2}" />
@@ -80,14 +85,14 @@
             </ListView.View>
         </ListView>
 
-        <!--<Grid Visibility="Hidden" Margin="10" DockPanel.Dock="Bottom">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150*"/>
-                            <ColumnDefinition Width="100*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" x:Name="col0">AAA</Label>
-                        <Label Grid.Column="1" x:Name="col1">BBB</Label>
-                    </Grid>-->
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center">No matches found . . .</Label>
+        <Grid Visibility="Hidden" Margin="15" DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="150*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" x:Name="Col0">AAA</Label>
+            <Label Grid.Column="1" x:Name="Col1">BBB</Label>
+        </Grid>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Path=Contexts.Count, Converter={StaticResource ItemsCountToVisibilityConverter}}" Content="No matches found . . ."/>
     </DockPanel>
 </TabItem>

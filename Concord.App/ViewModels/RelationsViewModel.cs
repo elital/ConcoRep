@@ -63,7 +63,7 @@ namespace Concord.App.ViewModels
 
             // TODO : create real relation
 
-            var newRelation = new RelationModel {Name = NewData.RelationName, Id = _relationIdTemp++, Pairs = new ObservableCollection<PairModel>()};
+            var newRelation = new RelationModel {Name = NewData.RelationName, Pairs = new ObservableCollection<PairModel>()};
             Relations.Add(newRelation);
             NewData.RelationName = string.Empty;
             SelectedRelation = newRelation;
@@ -115,7 +115,7 @@ namespace Concord.App.ViewModels
                     FirstWord = new WordModel {Id = _wordIdTemp++, Word = NewData.FirstWord, Repetitions = 0},
                     SecondWord = new WordModel {Id = _wordIdTemp++, Word = NewData.SecondWord, Repetitions = 0}
                 };
-            Relations.Single(r => r.Id == SelectedRelation.Id).Pairs.Add(newPair);
+            Relations.Single(r => r.Name == SelectedRelation.Name).Pairs.Add(newPair);
             Pairs.Add(newPair);
             NewData.FirstWord = NewData.SecondWord = string.Empty;
         }

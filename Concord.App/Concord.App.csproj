@@ -76,6 +76,8 @@
     <Compile Include="Controls\WordsListControl.xaml.cs">
       <DependentUpon>WordsListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\ContextMapping.cs" />
+    <Compile Include="Mapping\GroupMapping.cs" />
     <Compile Include="Mapping\SongMapping.cs" />
     <Compile Include="Mapping\WordMapping.cs" />
     <Compile Include="Models\ContextModel.cs" />
@@ -178,7 +180,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Concord.Dal\Concord.Dal.csproj">
