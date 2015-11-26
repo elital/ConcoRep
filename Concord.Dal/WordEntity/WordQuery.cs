@@ -76,19 +76,21 @@ namespace Concord.Dal.WordEntity
         //    return OracleDataLayer.Instance.Select(ReadWords, statement, parameters.ToArray());
         //}
         
-        public Word GetOrCreateWord(string text, bool increaseRepetition)
+        internal Word GetOrCreateWord(string text, bool increaseRepetition, bool commit)
         {
+            if (string.IsNullOrEmpty(text))
+                return null;
+
             var word = new WordQuery {Word = text}.SingleOrDefault();
             
             if (word == null)
             {
                 var repetition = increaseRepetition ? 1 : 0;
-
-                word = WordCreator.Instance.Create(text, repetition);
+                word = WordCreator.Instance.Create(text, repetition, commit);
             }
             else if (increaseRepetition)
             {
-                WordCreator.Instance.IncreaseRepetition(word.Id);
+                WordCreator.Instance.IncreaseRepetition(word.Id, commit);
                 word.Repetitions++;
             }
 

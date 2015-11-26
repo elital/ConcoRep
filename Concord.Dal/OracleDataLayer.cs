@@ -10,6 +10,7 @@ namespace Concord.Dal
     {
         private OracleConnection _connection;
         private readonly string _connectionString;
+        private OracleTransaction _transaction;
 
         private static OracleDataLayer _instance;
         public static OracleDataLayer Instance => _instance ?? (_instance = new OracleDataLayer());
@@ -27,47 +28,53 @@ namespace Concord.Dal
 
         public void Disconnect()
         {
+            Rollback();
             _connection.Close();
+            _connection.Dispose();
         }
 
         public T Select<T>(Func<OracleDataReader, T> handleResult, string statement, params KeyValuePair<string, object>[] parameters)
         {
             CheckConnection();
 
-            var command = new OracleCommand {Connection = _connection, CommandText = statement};
+            using (var command = new OracleCommand {Connection = _connection, CommandText = statement})
+            {
+                if (parameters != null)
+                    foreach (var parameter in parameters)
+                        command.Parameters.Add(parameter.Key, parameter.Value);
 
-            if (parameters != null)
-                foreach (var parameter in parameters)
-                    command.Parameters.Add(parameter.Key, parameter.Value);
-
-            var reader = command.ExecuteReader();
-            var result = handleResult(reader);
-            
-            return result;
+                using (var reader = command.ExecuteReader())
+                    return handleResult(reader);
+            }
         }
 
         public int DmlAction(string statement, params KeyValuePair<string, object>[] parameters)
         {
             CheckConnection();
 
-            var command = new OracleCommand {Connection = _connection, CommandText = statement};
-
-            if (parameters != null)
-                foreach (var parameter in parameters)
-                    command.Parameters.Add(parameter.Key, parameter.Value);
-
-            int rowsInserted;
-
-            using (var transaction = _connection.BeginTransaction())
+            using (var command = new OracleCommand {Connection = _connection, CommandText = statement})
             {
-                command.Transaction = transaction;
+                if (parameters != null)
+                    foreach (var parameter in parameters)
+                        command.Parameters.Add(parameter.Key, parameter.Value);
 
-                rowsInserted = command.ExecuteNonQuery();
-
-                transaction.Commit();
+                command.Transaction = _transaction ?? (_transaction = _connection.BeginTransaction());
+                return command.ExecuteNonQuery();
             }
+        }
 
-            return rowsInserted;
+        internal void Commit()
+        {
+            _transaction?.Commit();
+            _transaction?.Dispose();
+            _transaction = null;
+        }
+
+        internal void Rollback()
+        {
+            _transaction?.Rollback();
+            _transaction?.Dispose();
+            _transaction = null;
         }
 
         private void CheckConnection()

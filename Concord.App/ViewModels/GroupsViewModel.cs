@@ -23,10 +23,7 @@ namespace Concord.App.ViewModels
 
         // TODO : MISSING : find contexts by word from group or by group (? or by few words from group ?)
 
-        // TODO : REMOVE !!!
-        private int _groupIdTemp = 1;
-        private int _wordIdTemp = 1;
-
+        
         public GroupsViewModel()
         {
             // TODO : fetch groups from db
@@ -149,7 +146,7 @@ namespace Concord.App.ViewModels
         {
             Words.Clear();
 
-            if (SelectedGroup != null)
+            if (SelectedGroup != null && SelectedGroup.Words.Any())
                 Words.AddRange(SelectedGroup.Words);
         }
 

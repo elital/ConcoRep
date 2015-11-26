@@ -36,9 +36,12 @@ namespace Concord.Dal.SongWordEntity
 
         #endregion
 
-        public void Create(string wordText, int songId, int line, int column)
+        internal void Create(string wordText, int songId, int line, int column, bool commit)
         {
-            var word = new WordQuery().GetOrCreateWord(wordText, true);
+            if (string.IsNullOrEmpty(wordText))
+                return;
+
+            var word = new WordQuery().GetOrCreateWord(wordText, true, commit);
             var id = SequenceQuery.Instance.GetSongWordId();
 
             OracleDataLayer.Instance.DmlAction(_createSongWordStatement,
@@ -47,6 +50,9 @@ namespace Concord.Dal.SongWordEntity
                 new KeyValuePair<string, object>(WordLineText, line),
                 new KeyValuePair<string, object>(WordColumnText, column),
                 new KeyValuePair<string, object>(WordIdText, word.Id));
+
+            if (commit)
+                OracleDataLayer.Instance.Commit();
         }
     }
 }

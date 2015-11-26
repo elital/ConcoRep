@@ -46,7 +46,12 @@ namespace Concord.Dal.WordEntity
 
         #endregion
 
-        public Word Create(string text, int repetitions)
+        //public Word Create(string text, int repetitions)
+        //{
+        //    return Create(text, repetitions, true);
+        //}
+
+        internal Word Create(string text, int repetitions, bool commit)
         {
             if (string.IsNullOrEmpty(text))
                 throw new ArgumentNullException(Utils.GetMemberName(() => text));
@@ -61,12 +66,18 @@ namespace Concord.Dal.WordEntity
                 new KeyValuePair<string, object>(WordText, text),
                 new KeyValuePair<string, object>(RepetitionText, repetitions));
 
+            if (commit)
+                OracleDataLayer.Instance.Commit();
+
             return new WordQuery().GetWordById(id);
         }
 
-        public bool IncreaseRepetition(int id)
+        internal bool IncreaseRepetition(int id, bool commit)
         {
             var rowcount = OracleDataLayer.Instance.DmlAction(_increaseWordRepetitionStatement, new KeyValuePair<string, object>(IdText, id));
+
+            if (commit)
+                OracleDataLayer.Instance.Commit();
 
             return rowcount == 1;
         }

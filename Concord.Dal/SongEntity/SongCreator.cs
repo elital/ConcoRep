@@ -53,6 +53,8 @@ namespace Concord.Dal.SongEntity
 
             BuildSongWords(id, inputSong.SongText);
 
+            OracleDataLayer.Instance.Commit();
+
             return new SongQuery().GetById(id);
         }
 
@@ -84,7 +86,7 @@ namespace Concord.Dal.SongEntity
                 var currentColumn = 0;
 
                 foreach (var currentWord in columns)
-                    SongWordCreator.Instance.Create(currentWord, songId, currentLine, ++currentColumn);
+                    SongWordCreator.Instance.Create(currentWord, songId, currentLine, ++currentColumn, false);
             }
         }
     }

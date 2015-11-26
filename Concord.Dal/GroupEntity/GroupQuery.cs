@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Concord.Dal.WordEntity;
 using Concord.Entities;
 using Oracle.ManagedDataAccess.Client;
@@ -64,7 +63,6 @@ namespace Concord.Dal.GroupEntity
 
             return new Group
                 {
-                    //Id = (int) reader[IdText],
                     Name = (string) reader[GroupNameText]
                 };
         }
@@ -90,7 +88,8 @@ namespace Concord.Dal.GroupEntity
                 lastGroup.Words.Add(word);
             }
 
-            groups.Add(lastGroup);
+            if (lastGroup != null)
+                groups.Add(lastGroup);
 
             return groups;
         }

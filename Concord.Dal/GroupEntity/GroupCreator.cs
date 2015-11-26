@@ -31,19 +31,25 @@ namespace Concord.Dal.GroupEntity
 
         #endregion
 
-        public Word CreateGroupWord(string groupName, int wordId)
+        public Word CreateGroupWord(string groupName, string wordText)
+        {
+            if (string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(wordText))
+                return null;
+
+            var word = new WordQuery().GetOrCreateWord(wordText, false, false);
+            CreateGroupWord(groupName, word.Id, true);
+            return word;
+        }
+
+        private void CreateGroupWord(string groupName, int wordId, bool commit)
         {
             OracleDataLayer.Instance.DmlAction(_createNewWord,
                 new KeyValuePair<string, object>(IdText, SequenceQuery.Instance.GetGroupWordId()),
                 new KeyValuePair<string, object>(GroupNameText, groupName),
                 new KeyValuePair<string, object>(WordIdText, wordId));
 
-            return new WordQuery().GetWordById(wordId);
-        }
-
-        public Word CreateGroupWord(string groupName, string word)
-        {
-            return CreateGroupWord(groupName, new WordQuery().GetOrCreateWord(word, false).Id);
+            if (commit)
+                OracleDataLayer.Instance.Commit();
         }
     }
 }
