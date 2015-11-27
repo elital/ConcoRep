@@ -1,8 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using AutoMapper;
+using Concord.App.HiddenTabsData;
 using Concord.App.Models;
+using Concord.Dal.General;
+using Concord.Dal.RelationEntity;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 
@@ -16,12 +21,6 @@ namespace Concord.App.ViewModels
         public NewRelationModel NewData { get; set; }
         public RelationModel SelectedRelation { get; set; }
 
-        // TODO : MISSING : find contexts by pair from relation or by relation (? or by few pairs from relation ?)
-
-        // TODO : REMOVE !!!
-        private int _relationIdTemp = 1;
-        private int _wordIdTemp = 1;
-
         public RelationsViewModel()
         {
             Relations = new ObservableCollection<RelationModel>();
@@ -30,24 +29,39 @@ namespace Concord.App.ViewModels
             SelectedRelation = Relations.FirstOrDefault() ?? new RelationModel();
         }
 
-        private DelegateCommand createRelationCommand;
-        public ICommand CreateRelationCommand
-        {
-            get
-            {
-                if (createRelationCommand == null)
-                    createRelationCommand = new DelegateCommand(CreateRelationExecuted, CreateRelationCanExecute);
+        #region MainDockLoadedCommand
 
-                return createRelationCommand;
-            }
-        }
+        private DelegateCommand _mainDockLoadedCommand;
 
-        public bool CreateRelationCanExecute()
+        public ICommand MainDockLoadedCommand => _mainDockLoadedCommand ??
+                                                 (_mainDockLoadedCommand = new DelegateCommand(MainDockLoadedExecuted, MainDockLoadedCanExecute));
+
+        private bool MainDockLoadedCanExecute()
         {
             return true;
         }
 
-        public void CreateRelationExecuted()
+        private void MainDockLoadedExecuted()
+        {
+            Relations.Clear();
+            Relations.AddRange(Mapper.Map<List<RelationModel>>(new RelationQuery().Get()));
+        }
+
+        #endregion
+
+        #region CreateRelationCommand
+
+        private DelegateCommand _createRelationCommand;
+
+        public ICommand CreateRelationCommand => _createRelationCommand ??
+                                                 (_createRelationCommand = new DelegateCommand(CreateRelationExecuted, CreateRelationCanExecute));
+
+        private bool CreateRelationCanExecute()
+        {
+            return true;
+        }
+
+        private void CreateRelationExecuted()
         {
             if (string.IsNullOrEmpty(NewData.RelationName))
             {
@@ -60,34 +74,29 @@ namespace Concord.App.ViewModels
                 // TODO : set error
                 return;
             }
-
-            // TODO : create real relation
-
+            
             var newRelation = new RelationModel {Name = NewData.RelationName, Pairs = new ObservableCollection<PairModel>()};
             Relations.Add(newRelation);
             NewData.RelationName = string.Empty;
             SelectedRelation = newRelation;
             SelectedRelationExecuted();
+
+            // TODO : Add message - relation will be created with the first pair
         }
 
-        private DelegateCommand addPairCommand;
-        public ICommand AddPairCommand
-        {
-            get
-            {
-                if (addPairCommand == null)
-                    addPairCommand = new DelegateCommand(AddPairExecuted, AddPairCanExecute);
+        #endregion
 
-                return addPairCommand;
-            }
-        }
+        #region AddPairCommand
 
-        public bool AddPairCanExecute()
+        private DelegateCommand _addPairCommand;
+        public ICommand AddPairCommand => _addPairCommand ?? (_addPairCommand = new DelegateCommand(AddPairExecuted, AddPairCanExecute));
+
+        private bool AddPairCanExecute()
         {
             return true;
         }
 
-        public void AddPairExecuted()
+        private void AddPairExecuted()
         {
             if (string.IsNullOrEmpty(SelectedRelation.Name))
             {
@@ -106,61 +115,53 @@ namespace Concord.App.ViewModels
                 // TODO : set error - pair already exist
                 return;
             }
-
-            // TODO : create real words
-            // TODO : connect new words to the relation
-
-            var newPair = new PairModel
-                {
-                    FirstWord = new WordModel {Id = _wordIdTemp++, Word = NewData.FirstWord, Repetitions = 0},
-                    SecondWord = new WordModel {Id = _wordIdTemp++, Word = NewData.SecondWord, Repetitions = 0}
-                };
-            Relations.Single(r => r.Name == SelectedRelation.Name).Pairs.Add(newPair);
-            Pairs.Add(newPair);
+            
+            var newPair = RelationCreator.Instance.CreateRelationPair(SelectedRelation.Name, NewData.FirstWord, NewData.SecondWord);
+            var pair = Mapper.Map<PairModel>(newPair);
+            Relations.Single(r => r.Name == SelectedRelation.Name).Pairs.Add(pair);
+            Pairs.Add(pair);
             NewData.FirstWord = NewData.SecondWord = string.Empty;
         }
 
-        private DelegateCommand selectedRelationCommand;
-        public ICommand SelectedRelationCommand
-        {
-            get
-            {
-                if (selectedRelationCommand == null)
-                    selectedRelationCommand = new DelegateCommand(SelectedRelationExecuted, SelectedRelationCanExecute);
+        #endregion
 
-                return selectedRelationCommand;
-            }
-        }
+        #region SelectedRelationCommand
 
-        public bool SelectedRelationCanExecute()
+        private DelegateCommand _selectedRelationCommand;
+
+        public ICommand SelectedRelationCommand =>
+            _selectedRelationCommand ??
+            (_selectedRelationCommand = new DelegateCommand(SelectedRelationExecuted, SelectedRelationCanExecute));
+
+        private bool SelectedRelationCanExecute()
         {
             return true;
         }
 
-        public void SelectedRelationExecuted()
+        private void SelectedRelationExecuted()
         {
             Pairs.Clear();
-            Pairs.AddRange(SelectedRelation.Pairs);
+
+            if (SelectedRelation != null && SelectedRelation.Pairs.Any())
+                Pairs.AddRange(SelectedRelation.Pairs);
         }
 
-        private DelegateCommand doubleClickRelationCommand;
-        public ICommand DoubleClickRelationCommand
-        {
-            get
-            {
-                if (doubleClickRelationCommand == null)
-                    doubleClickRelationCommand = new DelegateCommand(DoubleClickRelationExecuted, DoubleClickRelationCanExecute);
+        #endregion
 
-                return doubleClickRelationCommand;
-            }
-        }
+        #region DoubleClickRelationCommand
 
-        public bool DoubleClickRelationCanExecute()
+        private DelegateCommand _doubleClickRelationCommand;
+
+        public ICommand DoubleClickRelationCommand =>
+            _doubleClickRelationCommand ??
+            (_doubleClickRelationCommand = new DelegateCommand(DoubleClickRelationExecuted, DoubleClickRelationCanExecute));
+
+        private bool DoubleClickRelationCanExecute()
         {
             return true;
         }
 
-        public void DoubleClickRelationExecuted()
+        private void DoubleClickRelationExecuted()
         {
             if (!Relations.Any())
                 return;
@@ -171,11 +172,14 @@ namespace Concord.App.ViewModels
                 return;
             }
 
-            // TODO : fetch relation contexts
+            var contexts = new ContextQuery {RelationName = SelectedRelation.Name}.Get();
+            ResultData.Instance.Contexts = Mapper.Map<List<ContextModel>>(contexts);
 
             ((MainWindow)Application.Current.MainWindow).HiddenTabFocusAllowed = true;
             ((MainWindow)Application.Current.MainWindow).MainTabControl.SelectedIndex = 5;
         }
+
+        #endregion
 
         public void AppendWord(WordModel word)
         {

@@ -14,6 +14,12 @@
     </TabItem.DataContext>
 
     <DockPanel>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding MainDockLoadedCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.Resources>
                 <Style TargetType="{x:Type TextBox}"><Setter Property="Margin" Value="0, 0, 0, 5" /></Style>

@@ -41,6 +41,17 @@ namespace Concord.App.Models
 
     public class PairModel : INotifyPropertyChanged
     {
+        private int? _id;
+        public int? Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                OnPropertyChanged("Id");
+            }
+        }
+
         private WordModel _firstWord;
         public WordModel FirstWord
         {

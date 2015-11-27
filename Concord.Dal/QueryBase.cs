@@ -24,6 +24,9 @@ namespace Concord.Dal
         
         protected void AddContainsLikePhraseComparison(ref string statement, string phrase, List<KeyValuePair<string, object>> parameters)
         {
+            if (string.IsNullOrEmpty(phrase))
+                return;
+
             var cond = statement.ToUpper().Contains("WHERE") ? " and " : " where ";
             var bindFieldName = "PHRASE";
             statement = $"{statement} {cond} {_containsLikeFunctionName}(ID, :{bindFieldName}) = {_trueResult} ";

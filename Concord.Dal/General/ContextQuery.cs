@@ -10,6 +10,7 @@ namespace Concord.Dal.General
 
         public string Word { get; set; }
         public string GroupName { get; set; }
+        public string RelationName { get; set; }
 
         #endregion
 
@@ -17,6 +18,7 @@ namespace Concord.Dal.General
 
         private const string MatchWordText = "MATCH_WORD";
         private const string GroupNameText = "GROUP_NAME";
+        private const string RelationNameText = "NAME";
         private const string MatchLocationText = "MATCH_LOCATION";
         private const string SongTitleText = "SONG_TITLE";
         private const string SongAuthorText = "SONG_AUTHOR";
@@ -38,6 +40,25 @@ namespace Concord.Dal.General
                                               "     , WORD_GROUPS  G " +
                                               "where  C.MATCH_WORD_ID = G.WORD_ID ";
 
+        private readonly string _getByRelation = $"select * " +
+                                                 $"from   SONG_WORDS   SW1 " +
+                                                 $"     , SONG_WORDS   SW2 " +
+                                                 $"     , WORDS        W1 " +
+                                                 $"     , WORDS        W2 " +
+                                                 $"     , RELATIONS    R " +
+                                                 $"     , CONTEXTS     C " +
+                                                 $"where  C.SONG_ID = SW1.SONG_ID " +
+                                                 $"and    SW1.SONG_ID = SW2.SONG_ID " +
+                                                 $"and    SW1.WORD_ID = W1.ID " +
+                                                 $"and    SW2.WORD_ID = W2.ID " +
+                                                 $"and    SW1.WORD_LINE = SW2.WORD_LINE " +
+                                                 $"and    SW1.WORD_COLUMN != SW2.WORD_COLUMN " +
+                                                 $"and    R.FIRST_WORD_ID = W1.ID " +
+                                                 $"and    R.SECOND_WORD_ID = W2.ID " +
+                                                 $"and    C.MATCH_LINE = SW1.WORD_LINE " +
+                                                 $"and    ((C.MATCH_COLUMN = SW1.WORD_COLUMN and SW1.WORD_COLUMN < SW2.WORD_COLUMN) or " +
+                                                 $"        (C.MATCH_COLUMN = SW2.WORD_COLUMN and SW2.WORD_COLUMN < SW1.WORD_COLUMN)) ";
+
         #endregion
 
         public IEnumerable<Context> Get()
@@ -45,15 +66,24 @@ namespace Concord.Dal.General
             string statement;
             var parameters = new List<KeyValuePair<string, object>>();
 
-            if (!string.IsNullOrEmpty(Word) || string.IsNullOrEmpty(GroupName))
+            if (!string.IsNullOrEmpty(Word))
             {
                 statement = _getAll;
                 AddComparison(ref statement, MatchWordText, Word, parameters);
             }
-            else
+            else if (!string.IsNullOrEmpty(GroupName))
             {
                 statement = _getByGroup;
                 AddComparison(ref statement, GroupNameText, GroupName, parameters);
+            }
+            else if (!string.IsNullOrEmpty(RelationName))
+            {
+                statement = _getByRelation;
+                AddComparison(ref statement, RelationNameText, RelationName, parameters);
+            }
+            else
+            {
+                statement = _getAll;
             }
 
             return OracleDataLayer.Instance.Select(ReadContexts, statement, parameters.ToArray());
