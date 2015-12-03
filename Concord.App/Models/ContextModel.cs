@@ -13,7 +13,7 @@ namespace Concord.App.Models
             set
             {
                 _songTitle = value;
-                OnPropertyChanged("SongTitle");
+                OnPropertyChanged(nameof(SongTitle));
             }
         }
 
@@ -24,7 +24,7 @@ namespace Concord.App.Models
             set
             {
                 _author = value;
-                OnPropertyChanged("Author");
+                OnPropertyChanged(nameof(Author));
             }
         }
 
@@ -35,7 +35,7 @@ namespace Concord.App.Models
             set
             {
                 _album = value;
-                OnPropertyChanged("Album");
+                OnPropertyChanged(nameof(Album));
             }
         }
 
@@ -46,7 +46,7 @@ namespace Concord.App.Models
             set
             {
                 _contextLineNumber = value;
-                OnPropertyChanged("ContextLineNumber");
+                OnPropertyChanged(nameof(ContextLineNumber));
             }
         }
 
@@ -57,7 +57,7 @@ namespace Concord.App.Models
             set
             {
                 _contextColumnNumber = value;
-                OnPropertyChanged("ContextColumnNumber");
+                OnPropertyChanged(nameof(ContextColumnNumber));
             }
         }
 
@@ -68,7 +68,7 @@ namespace Concord.App.Models
             set
             {
                 _contextLine1 = value;
-                OnPropertyChanged("ContextLine1");
+                OnPropertyChanged(nameof(ContextLine1));
             }
         }
 
@@ -79,7 +79,7 @@ namespace Concord.App.Models
             set
             {
                 _contextLine2 = value;
-                OnPropertyChanged("ContextLine2");
+                OnPropertyChanged(nameof(ContextLine2));
             }
         }
 
@@ -90,7 +90,7 @@ namespace Concord.App.Models
             set
             {
                 _contextLine3 = value;
-                OnPropertyChanged("ContextLine3");
+                OnPropertyChanged(nameof(ContextLine3));
             }
         }
 

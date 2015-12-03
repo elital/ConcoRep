@@ -44,6 +44,7 @@
     <Compile Include="Phrase.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="Song.cs" />
+    <Compile Include="SongStatistics.cs" />
     <Compile Include="SongWord.cs" />
     <Compile Include="Word.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

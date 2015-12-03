@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="General\ContextQuery.cs" />
+    <Compile Include="General\StatisticsQuery.cs" />
     <Compile Include="GroupEntity\GroupCreator.cs" />
     <Compile Include="GroupEntity\GroupQuery.cs" />
     <Compile Include="PhraseEntity\PhraseCreator.cs" />

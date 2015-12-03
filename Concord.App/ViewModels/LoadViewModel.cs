@@ -1,26 +1,57 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using AutoMapper;
+using Concord.App.Annotations;
 using Concord.App.HiddenTabsData;
 using Concord.App.Models;
+using Concord.Dal.General;
 using Concord.Dal.SongEntity;
 using Concord.Entities;
 using Microsoft.Practices.Prism.Commands;
 
 namespace Concord.App.ViewModels
 {
+    public class GeneralProperties : INotifyPropertyChanged
+    {
+        private bool _readonly;
+
+        public bool Readonly
+        {
+            get { return _readonly; }
+            set
+            {
+                _readonly = value;
+                OnPropertyChanged(nameof(Readonly));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     public class LoadViewModel
     {
         public SongModel Song { get; set; }
 
-        public bool IsReadonly { get; set; }
+        public GeneralProperties Properties { get; set; }
+
+        public SongStatisticsModel SongStatistics { get; set; }
 
         public LoadViewModel()
         {
             Song = new SongModel { PublishDate = DateTime.Today };
+            Properties = new GeneralProperties();
+            SongStatistics = new SongStatisticsModel();
         }
         
         #region Load new song
@@ -131,7 +162,7 @@ namespace Concord.App.ViewModels
 
         private void MainDockLoadedExecuted()
         {
-            if (!IsReadonly)
+            if (!Properties.Readonly)
                 return;
 
             if (ResultData.Instance.SongId <= 0)
@@ -139,6 +170,9 @@ namespace Concord.App.ViewModels
 
             var song = new SongQuery().GetById(ResultData.Instance.SongId);
             Mapper.Map(song, Song);
+
+            var songStat = StatisticsQuery.Instance.GetSongStatistics(ResultData.Instance.SongId);
+            Mapper.Map(songStat, SongStatistics);
         }
 
         #endregion
@@ -158,7 +192,7 @@ namespace Concord.App.ViewModels
 
         private void MainDockUnloadedExecuted()
         {
-            if (!IsReadonly)
+            if (!Properties.Readonly)
                 return;
 
             ResultData.Instance.SongId = 0;

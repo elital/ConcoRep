@@ -14,7 +14,7 @@ namespace Concord.App.Models
             set
             {
                 _phraseNumber = value;
-                OnPropertyChanged("PhraseNumber");
+                OnPropertyChanged(nameof(PhraseNumber));
             }
         }
 
@@ -25,7 +25,7 @@ namespace Concord.App.Models
             set
             {
                 _text = value;
-                OnPropertyChanged("Text");
+                OnPropertyChanged(nameof(Text));
             }
         }
 

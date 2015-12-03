@@ -71,6 +71,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ItemsCountToVisibilityConverter.cs" />
+    <Compile Include="Converters\ReadonlyToEnabledConverter.cs" />
+    <Compile Include="Converters\ReadonlyToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="HiddenTabsData\ResultData.cs" />
     <Compile Include="Controls\MainTabs\BaseTabItem.cs" />
     <Compile Include="Controls\WordsListControl.xaml.cs">
@@ -81,11 +84,13 @@
     <Compile Include="Mapping\PhraseMapping.cs" />
     <Compile Include="Mapping\RelationMapping.cs" />
     <Compile Include="Mapping\SongMapping.cs" />
+    <Compile Include="Mapping\StatisticsMapping.cs" />
     <Compile Include="Mapping\WordMapping.cs" />
     <Compile Include="Models\ContextModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\PhraseModel.cs" />
     <Compile Include="Models\RelationModel.cs" />
+    <Compile Include="Models\SongStatisticsModel.cs" />
     <Compile Include="ViewModels\ContextViewModel.cs" />
     <Compile Include="ViewModels\GlobalViewModel.cs" />
     <Compile Include="ViewModels\GroupsViewModel.cs" />

@@ -13,7 +13,7 @@ namespace Concord.App.Models
             set
             {
                 _id = value;
-                OnPropertyChanged("Id");
+                OnPropertyChanged(nameof(Id));
             }
         }
 
@@ -24,7 +24,7 @@ namespace Concord.App.Models
             set
             {
                 _word = value;
-                OnPropertyChanged("Word");
+                OnPropertyChanged(nameof(Word));
             }
         }
 
@@ -35,7 +35,7 @@ namespace Concord.App.Models
             set
             {
                 _repetitions = value;
-                OnPropertyChanged("Repetitions");
+                OnPropertyChanged(nameof(Repetitions));
             }
         }
 

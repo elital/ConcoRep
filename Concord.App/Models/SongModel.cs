@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Concord.App.Annotations;
 
@@ -18,7 +16,7 @@ namespace Concord.App.Models
             set
             {
                 _id = value;
-                OnPropertyChanged("Id");
+                OnPropertyChanged(nameof(Id));
             }
         }
 
@@ -29,7 +27,7 @@ namespace Concord.App.Models
             set
             {
                 _title = value;
-                OnPropertyChanged("Title");
+                OnPropertyChanged(nameof(Title));
             }
         }
 
@@ -40,7 +38,7 @@ namespace Concord.App.Models
             set
             {
                 _author = value;
-                OnPropertyChanged("Author");
+                OnPropertyChanged(nameof(Author));
             }
         }
 
@@ -51,7 +49,7 @@ namespace Concord.App.Models
             set
             {
                 _publishDate = value;
-                OnPropertyChanged("PublishDate");
+                OnPropertyChanged(nameof(PublishDate));
             }
         }
 
@@ -62,7 +60,7 @@ namespace Concord.App.Models
             set
             {
                 _album = value;
-                OnPropertyChanged("Album");
+                OnPropertyChanged(nameof(Album));
             }
         }
 
@@ -75,7 +73,7 @@ namespace Concord.App.Models
             set
             {
                 _text = value;
-                OnPropertyChanged("Text");
+                OnPropertyChanged(nameof(Text));
             }
         }
 

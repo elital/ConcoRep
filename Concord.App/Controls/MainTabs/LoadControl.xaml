@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
-             xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converters="clr-namespace:Concord.App.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="LoadControl_OnLoaded">
@@ -14,6 +14,13 @@
         <viewModels:LoadViewModel/>
     </TabItem.DataContext>
 
+    <TabItem.Resources>
+        <converters:ReadonlyToEnabledConverter x:Key="ReadonlyToEnabledConverter"/>
+        <converters:ReadonlyToVisibilityConverter x:Key="ReadonlyToVisibilityConverter"/>
+        <converters:NonReadonlyToVisibilityConverter x:Key="NonReadonlyToVisibilityConverter"/>
+        <converters:StringFormatConverter x:Key="StringFormatConverter"/>
+    </TabItem.Resources>
+    
     <DockPanel Name="LoadPanel">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Loaded">
@@ -43,21 +50,74 @@
             </Grid.RowDefinitions>
 
             <Label Content="Song title:" Grid.Row="0" Grid.Column="0"/>
-            <TextBox Name="SongTitle" Text="{Binding Song.Title}" Grid.Row="0" Grid.Column="1"/>
+            <TextBox Text="{Binding Song.Title}" Grid.Row="0" Grid.Column="1" IsReadOnly="{Binding Path=Properties.Readonly}"/>
             <Label Content="Author name:" Grid.Row="0" Grid.Column="3"/>
-            <TextBox Name="AuthorName" Text="{Binding Song.Author}" Grid.Row="0" Grid.Column="4"/>
+            <TextBox Text="{Binding Song.Author}" Grid.Row="0" Grid.Column="4" IsReadOnly="{Binding Path=Properties.Readonly}"/>
             <Label Content="Album name:" Grid.Row="1" Grid.Column="0"/>
-            <TextBox Name="AlbumName" Text="{Binding Song.Album}" Grid.Row="1" Grid.Column="1"/>
+            <TextBox Text="{Binding Song.Album}" Grid.Row="1" Grid.Column="1" IsReadOnly="{Binding Path=Properties.Readonly}"/>
             <Label Content="Published at:" Grid.Row="1" Grid.Column="3"/>
-            <DatePicker Name="PublishDate" SelectedDate="{Binding Song.PublishDate}" Grid.Row="1" Grid.Column="4"/>
+            <DatePicker SelectedDate="{Binding Song.PublishDate}" Grid.Row="1" Grid.Column="4" IsEnabled="{Binding Path=Properties.Readonly, Converter={StaticResource ReadonlyToEnabledConverter}}"/>
         </Grid>
 
-        <DockPanel DockPanel.Dock="Bottom" >
-            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Name="LoadNewSong" Content="Load from file" Command="{Binding LoadNewSongCommand}" Padding="8, 2, 8, 2" Margin="0, 0, 10, 0" Visibility="{Binding ButtonVisibility}"/>
-                <Button Name="SaveNewSong" Content="Save" Command="{Binding SaveNewSongCommand}" Padding="8, 2, 8, 2" Visibility="{Binding ButtonVisibility}"/>
+        <DockPanel DockPanel.Dock="Bottom">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical">
+
+                <Grid Margin="15" Visibility="{Binding Path=Properties.Readonly, Converter={StaticResource NonReadonlyToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0">
+                        <Label.Content>
+                            <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                                <Binding Source="Amount of words: {0}"/>
+                                <Binding Path="SongStatistics.WordsAmount"/>
+                            </MultiBinding>
+                        </Label.Content>
+                    </Label>
+
+                    <Label Grid.Row="0" Grid.Column="1">
+                        <Label.Content>
+                            <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                                <Binding Source="Longest word: {0} ({1})"/>
+                                <Binding Path="SongStatistics.LongestWord"/>
+                                <Binding Path="SongStatistics.LongestWordLength"/>
+                            </MultiBinding>
+                        </Label.Content>
+                    </Label>
+
+                    <Label Grid.Row="1" Grid.Column="1">
+                        <Label.Content>
+                            <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                                <Binding Source="Shortest word: {0} ({1})"/>
+                                <Binding Path="SongStatistics.ShortestWord"/>
+                                <Binding Path="SongStatistics.ShortestWordLength"/>
+                            </MultiBinding>
+                        </Label.Content>
+                    </Label>
+
+                    <Label Grid.Row="1" Grid.Column="0">
+                        <Label.Content>
+                            <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                                <Binding Source="Most repeated word: {0} ({1})"/>
+                                <Binding Path="SongStatistics.MostRepeatedWord"/>
+                                <Binding Path="SongStatistics.MostRepeatedWordRepetitions"/>
+                            </MultiBinding>
+                        </Label.Content>
+                    </Label>
+                </Grid>
+                
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Path=Properties.Readonly, Converter={StaticResource ReadonlyToVisibilityConverter}}">
+                    <Button Content="Load from file" Command="{Binding LoadNewSongCommand}" Padding="8, 2, 8, 2" Margin="0, 0, 10, 0"/>
+                    <Button Content="Save" Command="{Binding SaveNewSongCommand}" Padding="8, 2, 8, 2"/>
+                </StackPanel>
             </StackPanel>
-            <TextBox Text="{Binding Song.Text}" Name="LyricsText" Margin="5" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
+            <TextBox DockPanel.Dock="Top" Text="{Binding Song.Text}" Margin="5" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" IsReadOnly="{Binding Path=Properties.Readonly}"/>
         </DockPanel>
     </DockPanel>
 </TabItem>

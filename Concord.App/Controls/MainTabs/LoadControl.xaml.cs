@@ -44,21 +44,12 @@ namespace Concord.App.Controls.MainTabs
             if (IsReadonly)
                 SetReadOnly();
 
-            ((LoadViewModel) DataContext).IsReadonly = IsReadonly;
+            ((LoadViewModel) DataContext).Properties.Readonly = IsReadonly;
         }
 
         private void SetReadOnly()
         {
             Template = new ControlTemplate();
-
-            LoadNewSong.Visibility = Visibility.Collapsed;
-            SaveNewSong.Visibility = Visibility.Collapsed;
-
-            SongTitle.IsReadOnly = true;
-            AuthorName.IsReadOnly = true;
-            AlbumName.IsReadOnly = true;
-            PublishDate.IsEnabled = false;
-            LyricsText.IsReadOnly = true;
         }
     }
 }

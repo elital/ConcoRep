@@ -4,6 +4,8 @@ using Concord.App.Annotations;
 
 namespace Concord.App.Models
 {
+    // TODO : REMOVE
+
     public class LyricsModel : INotifyPropertyChanged
     {
         private int _id;
@@ -13,7 +15,7 @@ namespace Concord.App.Models
             set
             {
                 _id = value;
-                OnPropertyChanged("Id");
+                OnPropertyChanged(nameof(Id));
             }
         }
 
@@ -24,7 +26,7 @@ namespace Concord.App.Models
             set
             {
                 _line = value;
-                OnPropertyChanged("Line");
+                OnPropertyChanged(nameof(Line));
             }
         }
 
@@ -35,7 +37,7 @@ namespace Concord.App.Models
             set
             {
                 _column = value;
-                OnPropertyChanged("Column");
+                OnPropertyChanged(nameof(Column));
             }
         }
 
@@ -46,7 +48,7 @@ namespace Concord.App.Models
             set
             {
                 _word = value;
-                OnPropertyChanged("Word");
+                OnPropertyChanged(nameof(Word));
             }
         }
 

@@ -14,7 +14,7 @@ namespace Concord.App.Models
             set
             {
                 _name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -48,7 +48,7 @@ namespace Concord.App.Models
             set
             {
                 _id = value;
-                OnPropertyChanged("Id");
+                OnPropertyChanged(nameof(Id));
             }
         }
 
@@ -59,7 +59,7 @@ namespace Concord.App.Models
             set
             {
                 _firstWord = value;
-                OnPropertyChanged("FirstWord");
+                OnPropertyChanged(nameof(FirstWord));
             }
         }
 
@@ -70,13 +70,13 @@ namespace Concord.App.Models
             set
             {
                 _secondWord = value;
-                OnPropertyChanged("SecondWord");
+                OnPropertyChanged(nameof(SecondWord));
             }
         }
 
         public override string ToString()
         {
-            return string.Format("{0} - {1}", FirstWord.Word, SecondWord.Word);
+            return $"{FirstWord.Word} - {SecondWord.Word}";
         }
 
         #region INotifyPropertyChanged
@@ -102,7 +102,7 @@ namespace Concord.App.Models
             set
             {
                 _relationName = value;
-                OnPropertyChanged("RelationName");
+                OnPropertyChanged(nameof(RelationName));
             }
         }
 
@@ -113,7 +113,7 @@ namespace Concord.App.Models
             set
             {
                 _firstWord = value;
-                OnPropertyChanged("FirstWord");
+                OnPropertyChanged(nameof(FirstWord));
             }
         }
 
@@ -124,7 +124,7 @@ namespace Concord.App.Models
             set
             {
                 _secondWord = value;
-                OnPropertyChanged("SecondWord");
+                OnPropertyChanged(nameof(SecondWord));
             }
         }
 

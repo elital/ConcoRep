@@ -14,7 +14,7 @@ namespace Concord.App.Models
             set
             {
                 _name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -48,7 +48,7 @@ namespace Concord.App.Models
             set
             {
                 _groupName = value;
-                OnPropertyChanged("GroupName");
+                OnPropertyChanged(nameof(GroupName));
             }
         }
 
@@ -59,7 +59,7 @@ namespace Concord.App.Models
             set
             {
                 _word = value;
-                OnPropertyChanged("Word");
+                OnPropertyChanged(nameof(Word));
             }
         }
 
