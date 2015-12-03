@@ -38,7 +38,7 @@ namespace Concord.Dal.SongEntity
 
         #endregion
         
-        public Song Create(Song inputSong)
+        public int Create(Song inputSong)
         {
             ValidateParameters(inputSong);
 
@@ -55,7 +55,7 @@ namespace Concord.Dal.SongEntity
 
             OracleDataLayer.Instance.Commit();
 
-            return new SongQuery().GetById(id);
+            return id;
         }
 
         private void ValidateParameters(Song inputSong)

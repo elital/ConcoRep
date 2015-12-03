@@ -47,11 +47,6 @@ namespace Concord.Dal.WordEntity
                 new KeyValuePair<string, object>(IdText, id));
         }
 
-        public Word SingleOrDefault()
-        {
-            return Get().SingleOrDefault();
-        }
-
         public IEnumerable<Word> Get()
         {
             var statement = _getStatement;
@@ -81,7 +76,7 @@ namespace Concord.Dal.WordEntity
             if (string.IsNullOrEmpty(text))
                 return null;
 
-            var word = new WordQuery {Word = text}.SingleOrDefault();
+            var word = new WordQuery {Word = text}.Get().SingleOrDefault();
             
             if (word == null)
             {
@@ -112,7 +107,7 @@ namespace Concord.Dal.WordEntity
             return ReadWord(reader, true);
         }
 
-        internal static Word ReadWord(OracleDataReader reader, bool read)
+        private static Word ReadWord(OracleDataReader reader, bool read)
         {
             if (read)
                 if (!reader.Read())

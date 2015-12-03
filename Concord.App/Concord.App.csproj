@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Mapping\ContextMapping.cs" />
     <Compile Include="Mapping\GroupMapping.cs" />
+    <Compile Include="Mapping\PhraseMapping.cs" />
     <Compile Include="Mapping\RelationMapping.cs" />
     <Compile Include="Mapping\SongMapping.cs" />
     <Compile Include="Mapping\WordMapping.cs" />

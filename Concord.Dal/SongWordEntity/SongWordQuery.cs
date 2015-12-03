@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Concord.Dal.WordEntity;
 using Concord.Entities;
 using Oracle.ManagedDataAccess.Client;
@@ -41,11 +40,6 @@ namespace Concord.Dal.SongWordEntity
         public SongWord GetById(int id)
         {
             return OracleDataLayer.Instance.Select(ReadSongWord, _getByIdStatement, new KeyValuePair<string, object>(IdText, id));
-        }
-
-        public SongWord SingleOrDefault()
-        {
-            return Get().SingleOrDefault();
         }
 
         public IEnumerable<SongWord> Get()

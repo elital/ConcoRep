@@ -44,6 +44,8 @@
     <Compile Include="General\ContextQuery.cs" />
     <Compile Include="GroupEntity\GroupCreator.cs" />
     <Compile Include="GroupEntity\GroupQuery.cs" />
+    <Compile Include="PhraseEntity\PhraseCreator.cs" />
+    <Compile Include="PhraseEntity\PhraseQuery.cs" />
     <Compile Include="QueryBase.cs" />
     <Compile Include="RelationEntity\RelationCreator.cs" />
     <Compile Include="RelationEntity\RelationQuery.cs" />

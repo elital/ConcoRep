@@ -25,24 +25,17 @@ namespace Concord.App.ViewModels
         
         #region Load new song
 
-        private DelegateCommand loadNewSongCommand;
-        public ICommand LoadNewSongCommand
-        {
-            get
-            {
-                if (loadNewSongCommand == null)
-                    loadNewSongCommand = new DelegateCommand(LoadNewSongExecuted, LoadNewSongCanExecute);
+        private DelegateCommand _loadNewSongCommand;
 
-                return loadNewSongCommand;
-            }
-        }
-
-        public bool LoadNewSongCanExecute()
+        public ICommand LoadNewSongCommand => _loadNewSongCommand ??
+                                              (_loadNewSongCommand = new DelegateCommand(LoadNewSongExecuted, LoadNewSongCanExecute));
+        
+        private bool LoadNewSongCanExecute()
         {
             return true;
         }
 
-        public void LoadNewSongExecuted()
+        private void LoadNewSongExecuted()
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -100,28 +93,20 @@ namespace Concord.App.ViewModels
 
         #region Save new song
 
-        private DelegateCommand saveNewSongCommand;
+        private DelegateCommand _saveNewSongCommand;
 
-        public ICommand SaveNewSongCommand
-        {
-            get
-            {
-                if (saveNewSongCommand == null)
-                    saveNewSongCommand = new DelegateCommand(SaveNewSongExecuted, SaveNewSongCanExecute);
-
-                return saveNewSongCommand;
-            }
-        }
-
-        public bool SaveNewSongCanExecute()
+        public ICommand SaveNewSongCommand => _saveNewSongCommand ??
+                                              (_saveNewSongCommand = new DelegateCommand(SaveNewSongExecuted, SaveNewSongCanExecute));
+        
+        private bool SaveNewSongCanExecute()
         {
             return true;
         }
 
-        public void SaveNewSongExecuted()
+        private void SaveNewSongExecuted()
         {
-            var song = SongCreator.Instance.Create(Mapper.Map<Song>(Song));
-            ResultData.Instance.Song = Mapper.Map<SongModel>(song);
+            var songId = SongCreator.Instance.Create(Mapper.Map<Song>(Song));
+            ResultData.Instance.SongId = songId;
             Song.Clear();
 
             var mainWindow = (MainWindow) Application.Current.MainWindow;
@@ -134,59 +119,49 @@ namespace Concord.App.ViewModels
 
         #region MainDockLoadedCommand
 
-        private DelegateCommand mainDockLoadedCommand;
-        public ICommand MainDockLoadedCommand
-        {
-            get
-            {
-                if (mainDockLoadedCommand == null)
-                    mainDockLoadedCommand = new DelegateCommand(MainDockLoadedExecuted, MainDockLoadedCanExecute);
+        private DelegateCommand _mainDockLoadedCommand;
 
-                return mainDockLoadedCommand;
-            }
-        }
-
-        public bool MainDockLoadedCanExecute()
+        public ICommand MainDockLoadedCommand => _mainDockLoadedCommand ??
+                                                 (_mainDockLoadedCommand = new DelegateCommand(MainDockLoadedExecuted, MainDockLoadedCanExecute));
+        
+        private bool MainDockLoadedCanExecute()
         {
             return true;
         }
 
-        public void MainDockLoadedExecuted()
+        private void MainDockLoadedExecuted()
         {
             if (!IsReadonly)
                 return;
 
-            if (ResultData.Instance.Song != null && ResultData.Instance.Song.Id > 0)
-                Song.Copy(ResultData.Instance.Song);
+            if (ResultData.Instance.SongId <= 0)
+                return;
+
+            var song = new SongQuery().GetById(ResultData.Instance.SongId);
+            Mapper.Map(song, Song);
         }
 
         #endregion
 
         #region MainDockUnloadedCommand
 
-        private DelegateCommand mainDockUnloadedCommand;
-        public ICommand MainDockUnloadedCommand
-        {
-            get
-            {
-                if (mainDockUnloadedCommand == null)
-                    mainDockUnloadedCommand = new DelegateCommand(MainDockUnloadedExecuted, MainDockUnloadedCanExecute);
+        private DelegateCommand _mainDockUnloadedCommand;
 
-                return mainDockUnloadedCommand;
-            }
-        }
-
-        public bool MainDockUnloadedCanExecute()
+        public ICommand MainDockUnloadedCommand =>
+            _mainDockUnloadedCommand ??
+            (_mainDockUnloadedCommand = new DelegateCommand(MainDockUnloadedExecuted, MainDockUnloadedCanExecute));
+        
+        private bool MainDockUnloadedCanExecute()
         {
             return true;
         }
 
-        public void MainDockUnloadedExecuted()
+        private void MainDockUnloadedExecuted()
         {
             if (!IsReadonly)
                 return;
 
-            ResultData.Instance.Song.Clear();
+            ResultData.Instance.SongId = 0;
             ((MainWindow)Application.Current.MainWindow).HiddenTabFocusAllowed = false;
         }
 

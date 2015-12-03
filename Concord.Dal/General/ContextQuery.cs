@@ -11,6 +11,7 @@ namespace Concord.Dal.General
         public string Word { get; set; }
         public string GroupName { get; set; }
         public string RelationName { get; set; }
+        public int? PhraseNumber { get; set; }
 
         #endregion
 
@@ -80,6 +81,11 @@ namespace Concord.Dal.General
             {
                 statement = _getByRelation;
                 AddComparison(ref statement, RelationNameText, RelationName, parameters);
+            }
+            else if (PhraseNumber.HasValue)
+            {
+                statement = _getAll;
+                AddContainsPhraseComparison(ref statement, PhraseNumber, parameters);
             }
             else
             {

@@ -1,8 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using AutoMapper;
+using Concord.App.HiddenTabsData;
 using Concord.App.Models;
+using Concord.Dal.General;
+using Concord.Dal.PhraseEntity;
+using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 
 namespace Concord.App.ViewModels
@@ -13,13 +19,6 @@ namespace Concord.App.ViewModels
         public ObservableCollection<PhraseModel> Phrases { get; set; }
         public PhraseModel SelectedPhrase { get; set; }
 
-// TODO : MISSING : find contexts by word from group or by group (? or by few words from group ?)
-
-        // TODO : REMOVE !!!
-        private int _phId = 1;
-        private int _phraseNumberTemp = 1;
-        private int _wordIdTemp = 1;
-
         public PhrasesViewModel()
         {
             // TODO : fetch phrases from db
@@ -28,24 +27,39 @@ namespace Concord.App.ViewModels
             SelectedPhrase = Phrases.FirstOrDefault() ?? new PhraseModel();
         }
 
-        private DelegateCommand createPhraseCommand;
-        public ICommand CreatePhraseCommand
-        {
-            get
-            {
-                if (createPhraseCommand == null)
-                    createPhraseCommand = new DelegateCommand(CreatePhraseExecuted, CreatePhraseCanExecute);
+        #region MainDockLoadedCommand
 
-                return createPhraseCommand;
-            }
-        }
+        private DelegateCommand _mainDockLoadedCommand;
 
-        public bool CreatePhraseCanExecute()
+        public ICommand MainDockLoadedCommand => _mainDockLoadedCommand ??
+                                                 (_mainDockLoadedCommand = new DelegateCommand(MainDockLoadedExecuted, MainDockLoadedCanExecute));
+
+        private bool MainDockLoadedCanExecute()
         {
             return true;
         }
 
-        public void CreatePhraseExecuted()
+        private void MainDockLoadedExecuted()
+        {
+            Phrases.Clear();
+            Phrases.AddRange(Mapper.Map<List<PhraseModel>>(new PhraseQuery().Get()));
+        }
+
+        #endregion
+
+        #region Create phrase command
+
+        private DelegateCommand _createPhraseCommand;
+
+        public ICommand CreatePhraseCommand => _createPhraseCommand ??
+                                               (_createPhraseCommand = new DelegateCommand(CreatePhraseExecuted, CreatePhraseCanExecute));
+        
+        private bool CreatePhraseCanExecute()
+        {
+            return true;
+        }
+
+        private void CreatePhraseExecuted()
         {
             if (string.IsNullOrEmpty(NewPhrase.Text))
             {
@@ -59,48 +73,27 @@ namespace Concord.App.ViewModels
                 return;
             }
 
-            // TODO : create real phrase
-
-            //var phraseWords = NewPhrase.Text.Split(' ');
-            //var seq = 1;
-            //var newPhrase = new PhraseModel();
-
-            // TODO : NEW DB SEQUENCE - phrase number
-
-            // TODO : this is where i stopped
-
-            //foreach (var phraseWord in phraseWords)
-            //{
-            //    // TODO : create new word
-            //    // TODO : create new phrase word
-            //    var word = new WordModel {Id = _wordIdTemp++, Word = phraseWord, Repetitions = 0};
-            //    //var newPhraseWord = new PhraseWordModel {Id = _phId++, Word = word, WordSequence = seq++, PhraseNumber = _phraseNumberTemp};
-            //    //newPhrase.Words.Add(newPhraseWord);
-            //}
-
-            var newPhrase = new PhraseModel {PhraseNumber = _phraseNumberTemp++, Text = NewPhrase.Text};
+            var newPhrase = Mapper.Map<PhraseModel>(PhraseCreator.Instance.Create(NewPhrase.Text));
             Phrases.Add(newPhrase);
             NewPhrase.Text = string.Empty;
         }
+
+        #endregion
+
+        #region DoubleClickPhraseCommand
+
+        private DelegateCommand _doubleClickPhraseCommand;
+
+        public ICommand DoubleClickPhraseCommand =>
+            _doubleClickPhraseCommand ??
+            (_doubleClickPhraseCommand = new DelegateCommand(DoubleClickPhraseExecuted, DoubleClickPhraseCanExecute));
         
-        private DelegateCommand doubleClickPhraseCommand;
-        public ICommand DoubleClickPhraseCommand
-        {
-            get
-            {
-                if (doubleClickPhraseCommand == null)
-                    doubleClickPhraseCommand = new DelegateCommand(DoubleClickPhraseExecuted, DoubleClickPhraseCanExecute);
-
-                return doubleClickPhraseCommand;
-            }
-        }
-
-        public bool DoubleClickPhraseCanExecute()
+        private bool DoubleClickPhraseCanExecute()
         {
             return true;
         }
 
-        public void DoubleClickPhraseExecuted()
+        private void DoubleClickPhraseExecuted()
         {
             if (!Phrases.Any())
                 return;
@@ -113,9 +106,14 @@ namespace Concord.App.ViewModels
 
             // TODO : fetch group contexts
 
+            var contexts = new ContextQuery {PhraseNumber = SelectedPhrase.PhraseNumber}.Get();
+            ResultData.Instance.Contexts = Mapper.Map<List<ContextModel>>(contexts);
+
             ((MainWindow) Application.Current.MainWindow).HiddenTabFocusAllowed = true;
             ((MainWindow) Application.Current.MainWindow).MainTabControl.SelectedIndex = 5;
         }
+
+        #endregion
 
         public void AppendWord(WordModel word)
         {

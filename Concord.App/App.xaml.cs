@@ -18,6 +18,7 @@ namespace Concord.App
             GroupMapping.MapGroup();
             ContextMapping.MapContext();
             RelationMapping.MapRelation();
+            PhraseMapping.MapPhrase();
 
             OracleDataLayer.Instance.Connect();
         }

@@ -8,7 +8,8 @@ namespace Concord.Dal
         private string _fieldComparison = " {0} = :{0} ";
         private string _fieldLikeComparison = " {0} like :{1} ";
         private string _likeOperator = "%";
-        private string _containsLikeFunctionName = "ET_UTILS.CONTAINS_LIKE_PHRASE";
+        private string _containsLikeFunctionName = "ET_UTILS.CONTAINS_LIKE_TEXT";
+        private string _containsPhraseFunctionName = "ET_UTILS.CONTAINS_PHRASE";
         private string _trueResult = "ET_UTILS.GET_TRUE_RESULT";
         
         protected void AddComparison(ref string statement, string comparisonField, object value, List<KeyValuePair<string, object>> parameters)
@@ -33,6 +34,17 @@ namespace Concord.Dal
             parameters.Add(new KeyValuePair<string, object>(bindFieldName, phrase));
         }
         
+        protected void AddContainsPhraseComparison(ref string statement, int? phraseNumber, List<KeyValuePair<string, object>> parameters)
+        {
+            if (!phraseNumber.HasValue)
+                return;
+
+            var cond = statement.ToUpper().Contains("WHERE") ? " and " : " where ";
+            var bindFieldName = "PHRASE_NUMBER";
+            statement = $"{statement} {cond} {_containsPhraseFunctionName}(SONG_ID, MATCH_LINE, MATCH_COLUMN, :{bindFieldName}) = {_trueResult} ";
+            parameters.Add(new KeyValuePair<string, object>(bindFieldName, phraseNumber.Value));
+        }
+
         protected void AddOrLikeComparison(ref string statement, string comparisonField, string value, List<KeyValuePair<string, object>> parameters)
         {
             AddLikeComparison(ref statement, comparisonField, value, parameters, "or");

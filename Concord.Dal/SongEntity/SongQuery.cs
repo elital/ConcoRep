@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Concord.Dal.SongWordEntity;
 using Concord.Entities;
 using Oracle.ManagedDataAccess.Client;
@@ -41,15 +40,10 @@ namespace Concord.Dal.SongEntity
 
         public Song GetById(int id)
         {
-            return OracleDataLayer.Instance.Select(ReadSong, _getByIdStatement, new KeyValuePair<string, object>(IdText, id));
+            return OracleDataLayer.Instance.Select(reader => ReadSong(reader, true), _getByIdStatement, new KeyValuePair<string, object>(IdText, id));
         }
-
-        public Song SingleOrDefault()
-        {
-            return Get().SingleOrDefault();
-        }
-
-        public IEnumerable<Song> Get()
+        
+        public IEnumerable<Song> Get(bool withWords)
         {
             var statement = _getStatement;
             var parameters = new List<KeyValuePair<string, object>>();
@@ -59,23 +53,23 @@ namespace Concord.Dal.SongEntity
             AddComparison(ref statement, PublishDateText, PublishDate, parameters);
             AddAndLikeComparison(ref statement, AlbumNameText, AlbumName, parameters);
             AddContainsLikePhraseComparison(ref statement, FreeText, parameters);
-            
-            return OracleDataLayer.Instance.Select(ReadSongs, statement, parameters.ToArray());
+
+            return OracleDataLayer.Instance.Select(reader => ReadSongs(reader, withWords), statement, parameters.ToArray());
         }
 
-        private IEnumerable<Song> ReadSongs(OracleDataReader reader)
+        private IEnumerable<Song> ReadSongs(OracleDataReader reader, bool readWords)
         {
             var songs = new List<Song>();
 
             Song song;
 
-            while ((song = ReadSong(reader)) != null)
+            while ((song = ReadSong(reader, readWords)) != null)
                 songs.Add(song);
 
             return songs;
         }
 
-        private Song ReadSong(OracleDataReader reader)
+        private Song ReadSong(OracleDataReader reader, bool readWords)
         {
             if (!reader.Read())
                 return null;
@@ -90,7 +84,8 @@ namespace Concord.Dal.SongEntity
                     SongWords = new List<SongWord>()
                 };
 
-            song.SongWords.AddRange(new SongWordQuery {SongId = song.Id}.Get());
+            if (readWords)
+                song.SongWords.AddRange(new SongWordQuery {SongId = song.Id}.Get());
 
             return song;
         }

@@ -7,8 +7,10 @@ namespace Concord.Dal
         private const string SongSequenceName = "SONGS_S";
         private const string SongWordSequenceName = "SONG_WORDS_S";
         private const string WordSequenceName = "WORDS_S";
-        private const string WordGroupSequenceName = "WORD_GROUPS_S";
+        private const string GroupWordSequenceName = "WORD_GROUPS_S";
         private const string RelationPairSequenceName = "RELATIONS_S";
+        private const string PhraseWordSequenceName = "PHRASES_S";
+        private const string PhraseNumberSequenceName = "PHRASE_NUMBER_S";
 
         private const string SequenceValueColumn = "VAL";
         private readonly string _getNextSequenceIdStatement = "select {0}.NEXTVAL {1} from dual";
@@ -43,12 +45,22 @@ namespace Concord.Dal
 
         public int GetGroupWordId()
         {
-            return GetNextId(WordGroupSequenceName);
+            return GetNextId(GroupWordSequenceName);
         }
 
         public int GetRelationPairId()
         {
             return GetNextId(RelationPairSequenceName);
+        }
+
+        public int GetPhraseWordId()
+        {
+            return GetNextId(PhraseWordSequenceName);
+        }
+
+        public int GetPhraseNumber()
+        {
+            return GetNextId(PhraseNumberSequenceName);
         }
 
         private int GetNextId(string sequenceName)

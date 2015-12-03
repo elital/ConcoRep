@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Concord.Dal.WordEntity;
 using Concord.Entities;
 using Oracle.ManagedDataAccess.Client;
@@ -10,46 +9,48 @@ namespace Concord.Dal.GroupEntity
     {
         #region Properties
 
-        public string Name { get; set; }
-        public string Word { get; set; }
+        //public string Name { get; set; }
+        //public string Word { get; set; }
 
         #endregion
 
         #region Fields names
 
-        private const string IdText = "ID";
+        //private const string IdText = "ID";
         private const string GroupNameText = "GROUP_NAME";
-        private const string WordText = "WORD";
+        private const string WordIdText = "WORD_ID";
         
         #endregion
 
         #region Statements
 
         private readonly string _getStatement = $"select * " +
-                                                $"from   WORD_GROUPS WG " +
-                                                $"     , WORDS       W " +
-                                                $"where  WG.WORD_ID = W.ID ";
+                                                $"from   WORD_GROUPS WG ";
 
         private readonly string _orderByClause = " order by WG.GROUP_NAME, WG.ID ";
 
         #endregion
 
-        public Group SingleOrDefault()
-        {
-            return Get().SingleOrDefault();
-        }
-
         public IEnumerable<Group> Get()
         {
             var statement = _getStatement;
-            var parameters = new List<KeyValuePair<string, object>>();
+            //var parameters = new List<KeyValuePair<string, object>>();
 
-            AddComparison(ref statement, GroupNameText, Name, parameters);
-            AddComparison(ref statement, WordText, Word, parameters);
+            //AddComparison(ref statement, GroupNameText, Name, parameters);
+
+            //if (!string.IsNullOrEmpty(Word))
+            //{
+            //    var word = new WordQuery {Word = Word}.Get().SingleOrDefault();
+
+            //    if (word != null)
+            //    {
+            //        AddComparison(ref statement, WordIdText, word.Id, parameters);
+            //    }
+            //}
 
             statement = $"{statement} {_orderByClause}";
 
-            return OracleDataLayer.Instance.Select(ReadGroups, statement, parameters.ToArray());
+            return OracleDataLayer.Instance.Select(ReadGroups, statement);
         }
 
         private Group ReadGroupWord(OracleDataReader reader, out Word word)
@@ -59,7 +60,7 @@ namespace Concord.Dal.GroupEntity
             if (!reader.Read())
                 return null;
 
-            word = WordQuery.ReadWord(reader, false);
+            word = new WordQuery().GetWordById((int) reader[WordIdText]);
 
             return new Group
                 {

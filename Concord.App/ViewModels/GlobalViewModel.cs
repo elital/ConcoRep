@@ -40,7 +40,7 @@ namespace Concord.App.ViewModels
         {
             var query = Mapper.Map<SongModel, SongQuery>(SongSearch);
             Songs.Clear();
-            Songs.AddRange(query.Get().ToList().Select(Mapper.Map<Song, SongModel>));
+            Songs.AddRange(query.Get(false).ToList().Select(Mapper.Map<Song, SongModel>));
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace Concord.App.ViewModels
                 return;
             }
 
-            ResultData.Instance.Song.Copy(SelectedSong);
+            ResultData.Instance.SongId = SelectedSong.Id;
             var mainWindow = (MainWindow) Application.Current.MainWindow;
             mainWindow.HiddenTabFocusAllowed = true;
             mainWindow.GotToTab(mainWindow.SongViewTabName);

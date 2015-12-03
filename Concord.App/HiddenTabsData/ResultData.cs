@@ -13,12 +13,12 @@ namespace Concord.App.HiddenTabsData
         }
 
         public List<ContextModel> Contexts { get; set; }
-        public SongModel Song { get; set; }
+        public int SongId { get; set; }
 
         private ResultData()
         {
             Contexts = new List<ContextModel>();
-            Song = new SongModel();
+            SongId = 0;
         }
     }
 }
