@@ -1,0 +1,116 @@
+﻿<TabItem x:Class="Concord.App.Controls.MainTabs.StatisticsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converters="clr-namespace:Concord.App.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <TabItem.DataContext>
+        <viewModels:StatisticsViewModel/>
+    </TabItem.DataContext>
+
+    <TabItem.Resources>
+        <converters:StringFormatConverter x:Key="StringFormatConverter"/>
+    </TabItem.Resources>
+
+    <DockPanel>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding MainDockLoadedCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Number of songs in the database: {0}"/>
+                        <Binding Path="SystemStatistics.TotalSongsAmount"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <Label Grid.Row="1">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Total number of words: {0}"/>
+                        <Binding Path="SystemStatistics.TotalSystemSongsWordsAmount"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <Label Grid.Row="2">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Number of unique words: {0}"/>
+                        <Binding Path="SystemStatistics.SystemDifferentSongsWordsAmount"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <Label Grid.Row="3">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Longest song: {0} ({1})"/>
+                        <Binding Path="SystemStatistics.LongestSongName"/>
+                        <Binding Path="SystemStatistics.LongestSongWordsAmount"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <Label Grid.Row="4">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Shortest song: {0} ({1})"/>
+                        <Binding Path="SystemStatistics.ShortestSongName"/>
+                        <Binding Path="SystemStatistics.ShortestSongWordsAmount"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <Label Grid.Row="5">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Most repeated word: {0} ({1})"/>
+                        <Binding Path="SystemStatistics.MostRepeatedWord"/>
+                        <Binding Path="SystemStatistics.MostRepeatedWordRepetition"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <Label Grid.Row="6">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Longest word: {0} ({1})"/>
+                        <Binding Path="SystemStatistics.LongestWord"/>
+                        <Binding Path="SystemStatistics.LongestWordLength"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <Label Grid.Row="7">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                        <Binding Source="Shortest word: {0} ({1})"/>
+                        <Binding Path="SystemStatistics.ShortestWord"/>
+                        <Binding Path="SystemStatistics.ShortestWordLength"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </Grid>
+    </DockPanel>
+</TabItem>

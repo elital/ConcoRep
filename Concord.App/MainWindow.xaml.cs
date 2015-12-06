@@ -15,6 +15,7 @@ namespace Concord.App
         public string SongViewTabName => SongView.Name;
         public string ContextTabName => Context.Name;
         public string SongLoadTabName => SongLoad.Name;
+        public string StatisticsTabName => Statistics.Name;
         #endregion
 
         public BaseTabItem SelectedTab => MainTabControl.SelectedItem as BaseTabItem;
@@ -32,7 +33,7 @@ namespace Concord.App
         private void HiddenTab_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (!HiddenTabFocusAllowed)
-                MainTabControl.SelectedIndex = MainTabControl.Items.Count - 1;
+                GotToTab(StatisticsTabName);
         }
 
         public bool GotToTab(string tabName)

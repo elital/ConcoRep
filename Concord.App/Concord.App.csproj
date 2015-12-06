@@ -70,6 +70,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\MainTabs\StatisticsControl.xaml.cs">
+      <DependentUpon>StatisticsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\DateFormatConverter.cs" />
     <Compile Include="Converters\ItemsCountToVisibilityConverter.cs" />
     <Compile Include="Converters\ReadonlyToEnabledConverter.cs" />
     <Compile Include="Converters\ReadonlyToVisibilityConverter.cs" />
@@ -91,12 +95,14 @@
     <Compile Include="Models\PhraseModel.cs" />
     <Compile Include="Models\RelationModel.cs" />
     <Compile Include="Models\SongStatisticsModel.cs" />
+    <Compile Include="Models\SystemStatisticsModel.cs" />
     <Compile Include="ViewModels\ContextViewModel.cs" />
     <Compile Include="ViewModels\GlobalViewModel.cs" />
     <Compile Include="ViewModels\GroupsViewModel.cs" />
     <Compile Include="ViewModels\LoadViewModel.cs" />
     <Compile Include="ViewModels\PhrasesViewModel.cs" />
     <Compile Include="ViewModels\RelationsViewModel.cs" />
+    <Compile Include="ViewModels\StatisticsViewModel.cs" />
     <Compile Include="ViewModels\WordsListViewModel.cs" />
     <Page Include="Controls\MainTabs\ContextControl.xaml">
       <SubType>Designer</SubType>
@@ -119,6 +125,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\MainTabs\RelationsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MainTabs\StatisticsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

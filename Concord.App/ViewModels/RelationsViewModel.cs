@@ -121,6 +121,7 @@ namespace Concord.App.ViewModels
             Relations.Single(r => r.Name == SelectedRelation.Name).Pairs.Add(pair);
             Pairs.Add(pair);
             NewData.FirstWord = NewData.SecondWord = string.Empty;
+            ((MainWindow) Application.Current.MainWindow).RefreshWordAction();
         }
 
         #endregion

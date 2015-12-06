@@ -41,7 +41,8 @@
             <mainTabs:PhrasesControl x:Name="Phrases" Header="Phrases" TabIndex="3"/>
             <mainTabs:LoadControl x:Name="SongView" IsReadonly="True" GotKeyboardFocus="HiddenTab_OnGotKeyboardFocus" TabIndex="4"/>
             <mainTabs:ContextControl x:Name="Context" GotKeyboardFocus="HiddenTab_OnGotKeyboardFocus" TabIndex="5"/>
-            <mainTabs:LoadControl x:Name="SongLoad" Header="Load" DockPanel.Dock="Right" HorizontalAlignment="Right" TabIndex="6"/>
+            <mainTabs:LoadControl x:Name="SongLoad" Header="Load" DockPanel.Dock="Right" HorizontalAlignment="Right" TabIndex="7"/>
+            <mainTabs:StatisticsControl x:Name="Statistics" Header="Statistics" DockPanel.Dock="Right" HorizontalAlignment="Right" TabIndex="6"/>
         </TabControl>
     </DockPanel>
 </Window>

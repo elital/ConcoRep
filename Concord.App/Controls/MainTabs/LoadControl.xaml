@@ -21,7 +21,7 @@
         <converters:StringFormatConverter x:Key="StringFormatConverter"/>
     </TabItem.Resources>
     
-    <DockPanel Name="LoadPanel">
+    <DockPanel>
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Loaded">
                 <i:InvokeCommandAction Command="{Binding MainDockLoadedCommand}"/>

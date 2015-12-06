@@ -76,6 +76,7 @@ namespace Concord.App.ViewModels
             var newPhrase = Mapper.Map<PhraseModel>(PhraseCreator.Instance.Create(NewPhrase.Text));
             Phrases.Add(newPhrase);
             NewPhrase.Text = string.Empty;
+            ((MainWindow) Application.Current.MainWindow).RefreshWordAction();
         }
 
         #endregion

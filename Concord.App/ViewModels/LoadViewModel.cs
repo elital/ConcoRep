@@ -136,14 +136,22 @@ namespace Concord.App.ViewModels
 
         private void SaveNewSongExecuted()
         {
-            var songId = SongCreator.Instance.Create(Mapper.Map<Song>(Song));
-            ResultData.Instance.SongId = songId;
-            Song.Clear();
+            try
+            {
+                var songId = SongCreator.Instance.Create(Mapper.Map<Song>(Song));
+                ResultData.Instance.SongId = songId;
+                Song.Clear();
 
-            var mainWindow = (MainWindow) Application.Current.MainWindow;
+                var mainWindow = (MainWindow) Application.Current.MainWindow;
 
-            mainWindow.HiddenTabFocusAllowed = true;
-            mainWindow.GotToTab(mainWindow.SongViewTabName);
+                mainWindow.RefreshWordAction();
+                mainWindow.HiddenTabFocusAllowed = true;
+                mainWindow.GotToTab(mainWindow.SongViewTabName);
+            }
+            catch (ArgumentNullException)
+            {
+                // TODO : Set error
+            }
         }
 
         #endregion

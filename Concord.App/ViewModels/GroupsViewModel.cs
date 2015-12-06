@@ -21,13 +21,8 @@ namespace Concord.App.ViewModels
         public ObservableCollection<WordModel> Words { get; set; }
         public GroupModel SelectedGroup { get; set; }
 
-        // TODO : MISSING : find contexts by word from group or by group (? or by few words from group ?)
-
-        
         public GroupsViewModel()
         {
-            // TODO : fetch groups from db
-
             NewData = new NewGroupModel();
             Groups = new ObservableCollection<GroupModel>();
             Words = new ObservableCollection<WordModel>();
@@ -126,6 +121,7 @@ namespace Concord.App.ViewModels
             Groups.Single(g => g.Name == SelectedGroup.Name).Words.Add(word);
             Words.Add(word);
             NewData.Word = string.Empty;
+            ((MainWindow) Application.Current.MainWindow).RefreshWordAction();
         }
 
         #endregion

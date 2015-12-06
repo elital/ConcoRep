@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Concord.App.ViewModels"
-             xmlns:local="clr-namespace:Concord.App.Converters"
+             xmlns:converters="clr-namespace:Concord.App.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mainTabs="clr-namespace:Concord.App.Controls.MainTabs"
              mc:Ignorable="d" 
@@ -13,9 +13,10 @@
     <TabItem.DataContext>
         <viewModels:GlobalViewModel/>
     </TabItem.DataContext>
-    
+
     <TabItem.Resources>
-        <local:ItemsCountToVisibilityConverter x:Key="ItemsCountToVisibilityConverter"/>
+        <converters:ItemsCountToVisibilityConverter x:Key="ItemsCountToVisibilityConverter"/>
+        <converters:DateFormatConverter x:Key="DateFormatConverter"/>
     </TabItem.Resources>
     
     <DockPanel>
@@ -51,7 +52,7 @@
                 <GridView>
                     <GridViewColumn Header="Title" Width="{Binding ElementName=Col0, Path=ActualWidth}" DisplayMemberBinding="{Binding Title}" />
                     <GridViewColumn Header="Author" Width="{Binding ElementName=Col1, Path=ActualWidth}" DisplayMemberBinding="{Binding Author}" />
-                    <GridViewColumn Header="Publish Date" Width="{Binding ElementName=Col2, Path=ActualWidth}" DisplayMemberBinding="{Binding PublishDate}" />
+                    <GridViewColumn Header="Publish Date" Width="{Binding ElementName=Col2, Path=ActualWidth}" DisplayMemberBinding="{Binding PublishDate, Converter={StaticResource DateFormatConverter}}" />
                     <GridViewColumn Header="Album Name" Width="{Binding ElementName=Col3, Path=ActualWidth}" DisplayMemberBinding="{Binding Album}" />
                 </GridView>
             </ListView.View>

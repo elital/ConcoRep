@@ -46,6 +46,7 @@
     <Compile Include="Song.cs" />
     <Compile Include="SongStatistics.cs" />
     <Compile Include="SongWord.cs" />
+    <Compile Include="SystemStatistics.cs" />
     <Compile Include="Word.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
