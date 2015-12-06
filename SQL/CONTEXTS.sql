@@ -17,12 +17,8 @@ from   SONGS      S
      , WORDS      W
      , SONG_WORDS CSW
      , WORDS      CW
---     , WORD_GROUPS  GG
 where  S.ID = SW.SONG_ID
 and    SW.WORD_ID = W.ID
---and    W.WORD = 'la'
---and    GG.GROUP_NAME = 'my words'
---and    W.ID = GG.WORD_ID
 and    CSW.SONG_ID = S.ID
 and    CSW.WORD_LINE in (SW.WORD_LINE - 1, SW.WORD_LINE, SW.WORD_LINE + 1)
 and    CSW.WORD_ID = CW.ID
